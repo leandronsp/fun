@@ -15,6 +15,7 @@ rpn("^", [N1,N2|S]) -> [math:pow(N2,N1)|S];
 rpn("ln", [N|S])    -> [math:log(N)|S];
 rpn("log10", [N|S]) -> [math:log10(N)|S];
 
+% logB(N)
 rpn(X, Stack = [N|S]) ->
   case re:run(X, "^log*") of
     { match, _ } ->
