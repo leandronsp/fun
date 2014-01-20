@@ -1,0 +1,1 @@
+-record(user, { name, type=user, bio }).
