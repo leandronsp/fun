@@ -11,7 +11,7 @@ class Queue
   end
 
   # O(1)
-  def remove
+  def pull
     @list.remove(0)
   end
 
