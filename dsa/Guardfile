@@ -1,0 +1,4 @@
+guard :rspec, cmd: "rspec" do
+  watch(%r{examples/(.+)\.rb}) { |m| "spec/#{m[1]}_spec.rb" }
+  watch(%r{spec/.+})
+end
