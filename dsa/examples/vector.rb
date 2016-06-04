@@ -10,12 +10,11 @@ class Vector
     @next_available_position += 1
   end
 
+  # O(n)
   def add_to(position, element)
     raise StandarError unless occupied?(position)
     i = @next_available_position - 1
 
-    # O(n)
-    # shift to the right
     while i >= position do
       @array[i + 1] = @array[i]
       i -= 1
@@ -25,6 +24,7 @@ class Vector
     @next_available_position += 1
   end
 
+  # O(n)
   def remove(position)
     while position < @next_available_position do
       @array[position] = @array[position + 1]
@@ -34,8 +34,8 @@ class Vector
     @next_available_position -= 1
   end
 
-  def contains(element)
-    # O(n)
+  # O(n)
+  def contains?(element)
     for pos in (0..@array.length) do
       return true if element == @array[pos]
     end

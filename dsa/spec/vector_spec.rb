@@ -12,8 +12,8 @@ describe Vector do
   end
 
   it 'checks contains' do
-    expect(subject.contains('Fompila')).to be_truthy
-    expect(subject.contains('Haha')).to be_falsy
+    expect(subject.contains?('Fompila')).to be_truthy
+    expect(subject.contains?('Haha')).to be_falsy
   end
 
   it 'gets an elment' do
