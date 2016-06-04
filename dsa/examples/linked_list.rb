@@ -11,6 +11,8 @@ class Cell
 end
 
 class LinkedList
+  attr_reader :last
+
   def initialize
     @first = nil
     @last  = nil
@@ -116,8 +118,12 @@ class LinkedList
     @total
   end
 
+  def empty?
+    @total == 0
+  end
+
   def to_s
-    return '[]' if @total == 0
+    return [] if @total == 0
 
     current = @first
 
