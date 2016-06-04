@@ -96,10 +96,29 @@ class LinkedList
     previous.next = current.next
     current.next.previous = previous
 
-    current.next = nil
-    current.previous = nil
-
     @total -= 1
+  end
+
+  # O(n)
+  def remove_element(element)
+    current = @first
+
+    while current != nil do
+      if current.element == element
+        if current.previous && current.next
+          previous = current.previous
+          previous.next = current.next
+          current.next.previous = previous
+        else
+          @first = current.next
+        end
+
+        @total -= 1
+        return
+      end
+
+      current = current.next
+    end
   end
 
   # O(n)
