@@ -17,6 +17,7 @@ class SelectionSort
     end
   end
 
+  # O(n)
   def search_smaller(array, start, stop)
     smaller = start
     current = start
