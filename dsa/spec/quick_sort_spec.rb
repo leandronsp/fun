@@ -1,6 +1,6 @@
-require_relative '../examples/merge_sort'
+require_relative '../examples/quick_sort'
 
-describe MergeSort do
+describe QuickSort do
   it 'sorts' do
     array = []
     array.push('VXZ')
