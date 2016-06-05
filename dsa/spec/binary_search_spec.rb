@@ -17,4 +17,22 @@ describe BinarySearch do
     expect(subject.search(array, 'ABC')).to eq('ABC')
     expect(subject.search(array, 'not found')).to be_nil
   end
+
+  it 'one element' do
+    array = []
+    array.push('ABC')
+
+    expect(subject.search(array, 'ABC')).to eq('ABC')
+    expect(subject.search(array, 'not found')).to be_nil
+  end
+
+  it 'two elements' do
+    array = []
+    array.push('ABC')
+    array.push('DEF')
+
+    expect(subject.search(array, 'ABC')).to eq('ABC')
+    expect(subject.search(array, 'DEF')).to eq('DEF')
+    expect(subject.search(array, 'not found')).to be_nil
+  end
 end
