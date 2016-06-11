@@ -1,6 +1,5 @@
-defmodule LETest do
+defmodule BasicTypesTest do
   use ExUnit.Case
-  doctest LE
 
   test "operator `/` always returns a float" do
     assert(10 / 2) == 5.0
