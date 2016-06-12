@@ -12,12 +12,25 @@ defmodule Processes do
     assert received == "My name is Leandro"
   end
 
-  test "KeyValueStore" do
+  test "KeyValueStore as Task" do
     {:ok, pid} = KeyValueStore.start_link
     send pid, {:put, :name, "Leandro"}
     send pid, {:get, :name, self()}
   end
 
+  test "key value store as Agent" do
+    {:ok, pid} = Agent.start_link fn -> %{} end
+
+    Agent.update pid, fn(map) ->
+      Map.put map, :name, "Leandro"
+    end
+
+    result = Agent.get pid, fn(map) ->
+      Map.get map, :name
+    end
+
+    assert result == "Leandro"
+  end
 end
 
 defmodule KeyValueStore do
