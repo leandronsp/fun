@@ -1,0 +1,7 @@
+# A sample Guardfile
+# More info at https://github.com/guard/guard#readme
+
+guard 'rspec', all_after_pass: false, all_on_start: false, cmd: "rspec spec" do
+  watch(%r{^.+?_spec\.rb$})
+end
+
