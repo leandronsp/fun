@@ -16,6 +16,12 @@ defmodule Processes do
     {:ok, pid} = KeyValueStore.start_link
     send pid, {:put, :name, "Leandro"}
     send pid, {:get, :name, self()}
+
+    result = receive do
+      message -> message
+    end
+
+    assert result == "Leandro"
   end
 
   test "key value store as Agent" do
