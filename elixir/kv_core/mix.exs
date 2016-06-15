@@ -1,4 +1,4 @@
-defmodule KvUmbrella.Mixfile do
+defmodule KvCore.Mixfile do
   use Mix.Project
 
   def project do
