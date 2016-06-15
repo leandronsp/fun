@@ -1,9 +1,13 @@
-defmodule KV.Mixfile do
+defmodule KVServer.Mixfile do
   use Mix.Project
 
   def project do
-    [app: :kv,
+    [app: :kv_server,
      version: "0.0.1",
+     build_path: "../../_build",
+     config_path: "../../config/config.exs",
+     deps_path: "../../deps",
+     lockfile: "../../mix.lock",
      elixir: "~> 1.2",
      build_embedded: Mix.env == :prod,
      start_permanent: Mix.env == :prod,
@@ -14,8 +18,8 @@ defmodule KV.Mixfile do
   #
   # Type "mix help compile.app" for more information
   def application do
-    [applications: [:logger],
-    mod: {KV, []}]
+    [applications: [:logger, :kv],
+     mod: {KVServer, []}]
   end
 
   # Dependencies can be Hex packages:
@@ -26,11 +30,12 @@ defmodule KV.Mixfile do
   #
   #   {:mydep, git: "https://github.com/elixir-lang/mydep.git", tag: "0.1.0"}
   #
+  # To depend on another app inside the umbrella:
+  #
+  #   {:myapp, in_umbrella: true}
+  #
   # Type "mix help deps" for more examples and options
   defp deps do
-    [
-      {:mix_test_watch, "~> 0.2", only: :dev},
-      {:plug, "~> 1.0"}
-    ]
+    [{:kv, in_umbrella: true}]
   end
 end
