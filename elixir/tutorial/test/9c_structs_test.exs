@@ -22,10 +22,11 @@ defmodule StructsTest do
     user = %User{}
     assert is_map(user) == true
     assert Map.keys(user) == [:__struct__, :age, :name]
+    assert Map.get(user, :name) == "Leandro"
   end
 
   test "structs do not enumerate as a map" do
-    message = "undefined function StructsTest.User.fetch/2 (StructsTest.User does not\
+    message = "function StructsTest.User.fetch/2 is undefined (StructsTest.User does not\
  implement the Access behaviour)"
 
     assert_raise UndefinedFunctionError, message, fn ->

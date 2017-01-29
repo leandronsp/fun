@@ -15,7 +15,9 @@ defmodule BasicTypesTest do
 
   test "true/false are atoms" do
     assert is_atom(true) == true
+    assert is_atom(false) == true
     assert is_boolean(true) == true
+    assert is_boolean(false) == true
   end
 
   test "string interpolation" do
@@ -44,5 +46,6 @@ defmodule BasicTypesTest do
   test "`Tuples` are like arrays" do
     tuple = { "1", "2", "3" }
     assert tuple_size(tuple) == 3
+    assert elem(tuple, 1) == "2"
   end
 end

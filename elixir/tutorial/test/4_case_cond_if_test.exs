@@ -39,8 +39,8 @@ defmodule CaseCondIfTest do
       x, y -> x * y
     end
 
-    assert func.(3, 3) == 6
-    assert func.(-3, 3) == -9
+    assert func.(3, 3) == 6   # x > 0, so  3 + 3 = 6
+    assert func.(-3, 3) == -9 # x < 0, so -3 * 3 = -9
   end
 
   test "conds" do

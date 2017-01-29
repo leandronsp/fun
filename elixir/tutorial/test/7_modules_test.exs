@@ -25,6 +25,9 @@ defmodule ModulesTest do
   test "create function shortcut" do
     add_one = &(&1 + 1)
     assert add_one.(3) == 4
+
+    double_two = &(&1 * 2)
+    assert double_two.(4) == 8
   end
 
   test "function capturing from a module" do
