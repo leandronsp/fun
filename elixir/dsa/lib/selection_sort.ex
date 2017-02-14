@@ -4,6 +4,12 @@ defmodule SelectionSort do
   """
 
   @doc """
+  Algorithm:
+  FIND:EACH
+    FIND:SMALLER FROM CURRENT UNTIL END
+    REPLACE WITH SMALLER
+
+  Complexity:
   O(n^2)
 
   ## Examples
