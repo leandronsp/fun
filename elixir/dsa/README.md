@@ -4,12 +4,10 @@
 
 * Selection sort
 * Insertion sort
-* Quicksort
 * Merge sort
-* Binary search
+* Quicksort
 
 ### Setup and Run tests
 	mix deps.get
 	mix test
 	mix test.watch (Happy TDD!)
-
