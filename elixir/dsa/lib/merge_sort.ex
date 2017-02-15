@@ -5,8 +5,8 @@ defmodule MergeSort do
 
   @doc """
   Algorithm:
-  SPLIT INTO SMALLER LISTS
-    MERGE HEADERS FROM DIFFERENT LISTS
+  SPLIT INTO SMALLER LISTS UNTIL SMALLEST
+    MERGE HEADERS
 
   Complexity:
   O(nlongn)
