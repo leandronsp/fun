@@ -1,6 +1,6 @@
 # Data Structures and Algorithms
 
-**DSA using Elixir**
+**Some sorting algorithms using Elixir**
 
 * Selection sort
 * Insertion sort
