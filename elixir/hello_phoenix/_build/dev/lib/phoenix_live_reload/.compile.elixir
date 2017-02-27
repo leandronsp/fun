@@ -1,0 +1,23 @@
+v2.
+{<<"/Users/leandro/Documents/code/fun/elixir/hello_phoenix/_build/dev/lib/phoenix_live_reload/ebin/Elixir.Phoenix.LiveReloader.Socket.beam">>,
+ 'Elixir.Phoenix.LiveReloader.Socket',module,
+ <<"lib/phoenix_live_reload/socket.ex">>,
+ ['Elixir.Phoenix.Socket','Elixir.Module','Elixir.Phoenix','Elixir.Kernel',
+  'Elixir.Phoenix.Transports.WebSocket','Elixir.Phoenix.Transports.LongPoll'],
+ [],[],nil}.
+{<<"/Users/leandro/Documents/code/fun/elixir/hello_phoenix/_build/dev/lib/phoenix_live_reload/ebin/Elixir.Phoenix.LiveReload.Channel.beam">>,
+ 'Elixir.Phoenix.LiveReload.Channel',module,
+ <<"lib/phoenix_live_reload/channel.ex">>,
+ ['Elixir.Phoenix.Socket','Elixir.Logger','Elixir.Module','Elixir.Kernel',
+  'Elixir.Phoenix.Channel'],
+ ['Elixir.Application','Elixir.String.Chars','Elixir.Access',erlang,
+  'Elixir.String','Elixir.Enum',fs,'Elixir.Path'],
+ [],nil}.
+{<<"/Users/leandro/Documents/code/fun/elixir/hello_phoenix/_build/dev/lib/phoenix_live_reload/ebin/Elixir.Phoenix.LiveReloader.beam">>,
+ 'Elixir.Phoenix.LiveReloader',module,
+ <<"lib/phoenix_live_reload/live_reloader.ex">>,
+ ['Elixir.Application','Elixir.File','Elixir.Module','Elixir.Kernel',
+  'Elixir.Plug','Elixir.Plug.Conn'],
+ ['Elixir.String.Chars','Elixir.Map','Elixir.Access',erlang,'Elixir.String',
+  'Elixir.Enum'],
+ [],nil}.
