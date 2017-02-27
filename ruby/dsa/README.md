@@ -23,6 +23,6 @@
 * Binary Tree inversion
 
 ### Setup and Run tests
-	bundle install
-  bundle exec rspec spec
-  bundle exec guard (Happy TDD!)
+ 	bundle install
+ 	bundle exec rspec spec
+ 	bundle exec guard (Happy TDD!)
