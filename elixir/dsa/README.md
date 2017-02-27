@@ -4,6 +4,7 @@
 
 * Selection sort
 * Insertion sort
+* Bubble sort
 * Merge sort
 * Quicksort
 

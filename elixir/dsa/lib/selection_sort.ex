@@ -51,47 +51,40 @@ defmodule SelectionSort do
 
   def sort([]), do: []
 
-  def sort([current|[]]), do: [current]
-
-  def sort([current|[next|[]]]) do
-    cond do
-      current > next -> [next] ++ [current]
-      current < next -> [current] ++ [next]
-    end
-  end
+  def sort([current]), do: [current]
 
   def sort([current|tail]) do
     smaller = search_smaller(tail)
 
     cond do
-      current > smaller -> sort([smaller], [current] ++ tail -- [smaller])
-      current < smaller -> sort([current] ++ [smaller], tail -- [smaller])
+      current > smaller -> sort([smaller], [current | tail] -- [smaller])
+      current < smaller -> sort([current, smaller], tail -- [smaller])
     end
   end
 
   defp sort(left, []), do: left
 
-  defp sort(left, [current|[]]), do: left ++ [current]
+  defp sort(left, [current]), do: left ++ [current]
 
   defp sort(left, [current|tail]) do
     smaller = search_smaller(tail)
 
     cond do
-      current > smaller -> sort(left ++ [smaller], [current] ++ tail -- [smaller])
+      current > smaller -> sort(left ++ [smaller], [current | tail] -- [smaller])
       current < smaller -> sort(left ++ [current, smaller], tail -- [smaller])
     end
   end
 
-  defp search_smaller([current|[]]), do: current
+  defp search_smaller([current]), do: current
 
-  defp search_smaller([current|[next|[]]]) do
+  defp search_smaller([current, next]) do
     if current < next, do: current, else: next
   end
 
   defp search_smaller([current|[next|tail]]) do
     cond do
-      current < next -> search_smaller([current] ++ tail)
-      current > next -> search_smaller([next] ++ tail)
+      current < next -> search_smaller([current | tail])
+      current > next -> search_smaller([next | tail])
     end
   end
 
