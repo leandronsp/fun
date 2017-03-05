@@ -1,11 +1,9 @@
 defmodule Bob do
   def hey(input) do
     cond do
-      ends_with?(input, "!") && upcase?(input) -> "Whoa, chill out!"
       ends_with?(input, "?") -> "Sure."
       empty?(input) -> "Fine. Be that way!"
-      has_word?(input) && upcase?(input) -> "Whoa, chill out!"
-      input == "УХОДИ" -> "Whoa, chill out!"
+      upcase?(input) && !downcase?(input) -> "Whoa, chill out!"
       true -> "Whatever."
     end
   end
@@ -16,6 +14,10 @@ defmodule Bob do
 
   defp upcase?(input) do
     String.upcase(input) == input
+  end
+
+  defp downcase?(input) do
+    String.downcase(input) == input
   end
 
   defp has_word?(input) do
