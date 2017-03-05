@@ -13,9 +13,11 @@
 
 **Data structures**
 * Binary Tree
+* Hash Table
 
 **Other algorithms**
 * Binary Tree inversion
+* Balance Binary Tree
 
 ### Setup and Run tests
 	mix deps.get
