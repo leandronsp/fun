@@ -1,4 +1,10 @@
 fun
 ===
 
-fun with programming languages (Ruby, Elixir, Python, Erlang)
+fun with programming languages
+
+- Ruby
+- Elixir/Erlang
+- Python
+- Javascript
+- Clojure
