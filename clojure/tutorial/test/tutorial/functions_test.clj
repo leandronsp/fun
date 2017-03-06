@@ -2,7 +2,6 @@
   (:require [clojure.test :refer :all]
             [tutorial.core :refer :all]))
 
-
 (deftest tutorial-test
   (testing "functions"
     (def square(fn [x] (* x x)))
