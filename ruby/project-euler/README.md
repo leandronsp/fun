@@ -1,4 +1,0 @@
-project-euler
-=============
-
-programming
