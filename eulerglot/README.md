@@ -3,11 +3,13 @@
 In this project I show problems at [Project Euler](https://projecteuler.net/archives) and solve them using different languages.
 
 - Ruby
-- Javascript
 - Elixir
 - Clojure  
+- Javascript
 
 ### Running tests
+
+Inside each language folder, run:
 
 #### Ruby
 	bundle install
@@ -27,3 +29,4 @@ In this project I show problems at [Project Euler](https://projecteuler.net/arch
 #### Javascript
 	npm install
 	npm test
+	npm run tdd
