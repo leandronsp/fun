@@ -1,0 +1,5 @@
+.rspec
+spec
+Gemfile
+Gemfile.lock
+Guardfile
