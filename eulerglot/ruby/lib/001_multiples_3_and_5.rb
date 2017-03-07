@@ -8,16 +8,17 @@ class Multiples3And5
 
   def self.sum(array, acc)
     return acc if array == []
-
-    number = array.pop
+    number = array.at(-1)
 
     if number % 3 == 0 || number % 5 == 0
-      result = number + acc
-    else
-      result = acc
+      return sum(tail(array), number + acc)
     end
 
-    sum(array, result)
+    sum(tail(array), acc)
+  end
+
+  def self.tail(array)
+    array.slice(0, array.length - 1)
   end
 
 end
