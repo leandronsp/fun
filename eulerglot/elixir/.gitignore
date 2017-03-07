@@ -21,4 +21,5 @@ erl_crash.dump
 
 test
 mix.exs
+mix.lock
 config
