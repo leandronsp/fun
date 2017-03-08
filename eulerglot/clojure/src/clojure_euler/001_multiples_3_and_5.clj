@@ -1,4 +1,4 @@
-(ns clojure-euler.01_multiples_3_and_5)
+(ns clojure-euler.001_multiples_3_and_5)
 
 (defn sum_under
   [ceil]

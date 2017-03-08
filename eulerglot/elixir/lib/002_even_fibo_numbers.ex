@@ -1,5 +1,3 @@
-require IEx
-
 defmodule EvenFiboNumbers do
 
   def sum_under(0), do: 0
