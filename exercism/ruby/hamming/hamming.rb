@@ -11,7 +11,7 @@ class Hamming
   def self.do_compute(chars_a, chars_b, acc)
     return acc if chars_a.length == 0
 
-    char_a, char_b = chars_a.shift, chars_b.shift
+    char_a, char_b = chars_a.pop, chars_b.pop
     diff = difference(char_a, char_b)
 
     do_compute(chars_a, chars_b, acc + diff)
