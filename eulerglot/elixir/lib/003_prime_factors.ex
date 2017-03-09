@@ -10,13 +10,16 @@ defmodule PrimeFactors do
     |> Enum.max
   end
 
-  defp prime_factors(start, start, acc), do: acc ++ [start]
+  defp prime_factors(start, start, acc) do
+    acc ++ [start]
+  end
+
+  defp prime_factors(start, number, acc) when rem(number, start) == 0 do
+    prime_factors(start, (number / start) |> round, acc ++ [start])
+  end
 
   defp prime_factors(start, number, acc) do
-    case Integer.mod(number, start) == 0 do
-      true  -> prime_factors(start, number / start |> round, acc ++ [start])
-      false -> prime_factors(start + 1, number, acc)
-    end
+    prime_factors(start + 1, number, acc)
   end
 
 end
