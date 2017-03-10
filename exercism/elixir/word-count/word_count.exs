@@ -49,10 +49,9 @@ defmodule Words do
   end
 
   defp reduce([word | tail], acc) do
-    case Map.get(acc, word) do
-      nil   -> reduce(tail, Map.put(acc, word, 1))
-      count -> reduce(tail, %{acc | word => count + 1})
-    end
+    tail |> reduce(Map.update(acc, word, 1, &inc/1))
   end
+
+  defp inc(n), do: n + 1
 
 end
