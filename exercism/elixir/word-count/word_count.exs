@@ -4,8 +4,55 @@ defmodule Words do
 
   Words are compared case-insensitively.
   """
+
+  @pattern ~r/\w+-?\w*/u
+
   @spec count(String.t) :: map
   def count(sentence) do
-
+    sentence
+    |> String.split
+    |> do_count(%{})
   end
+
+  defp do_count([], acc) do
+    acc
+  end
+
+  defp do_count([word | tail], acc) do
+    word
+    |> apply_pattern
+    |> sanitize
+    |> reduce(acc)
+    |> (&do_count(tail, &1)).()
+  end
+
+  defp apply_pattern(word) do
+    case Regex.run(@pattern, word) do
+      [valid] -> valid
+      nil     -> nil
+    end
+  end
+
+  defp sanitize(nil) do
+    []
+  end
+
+  defp sanitize(word) do
+    word
+    |> String.downcase
+    |> String.replace("_", " ")
+    |> String.split
+  end
+
+  defp reduce([], acc) do
+    acc
+  end
+
+  defp reduce([word | tail], acc) do
+    case Map.get(acc, word) do
+      nil   -> reduce(tail, Map.put(acc, word, 1))
+      count -> reduce(tail, %{acc | word => count + 1})
+    end
+  end
+
 end
