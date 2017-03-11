@@ -1,9 +1,6 @@
 defmodule BinarySearch do
-  @moduledoc """
-  Documentation for BinarySearch.
-  """
 
-  @doc """
+  @moduledoc """
   Since Binary search in linked lists are not in logarithmic time and Erlang
   lists are linked lists, we have to transform a list into a tuple prior searching.
 
@@ -14,7 +11,6 @@ defmodule BinarySearch do
   O(nlogn)
 
   ## Examples
-
       iex> BinarySearch.search([], 7)
       nil
 
@@ -44,17 +40,15 @@ defmodule BinarySearch do
 
       iex> BinarySearch.search([10, 22, 33, 300], 33)
       33
-
   """
 
   def search([], _), do: nil
   def search([head], term) when head != term, do: nil
-
-  def search([head|tail], term) do
+  def search([head | tail], term) do
     cond do
       head == term -> head
       term < head  -> nil
-      head != term -> [head] ++ tail
+      head != term -> [head | tail]
         |> List.to_tuple
         |> TupleBinarySearch.search(term)
     end

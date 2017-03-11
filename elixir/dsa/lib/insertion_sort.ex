@@ -1,18 +1,9 @@
 defmodule InsertionSort do
   @moduledoc """
-  Documentation for InsertionSort.
-  """
-
-  @doc """
-  Algorithm:
-  WHILE:CURRENT < PREVIOUS
-    REPLACE WITH PREVIOUS
-
   Complexity:
-  O(n) -> O(n^2)
+  O(n^2)
 
   ## Examples
-
       iex> InsertionSort.sort([])
       []
 
@@ -48,43 +39,29 @@ defmodule InsertionSort do
 
       iex> InsertionSort.sort([300, 200, 1, 2, 3])
       [1, 2, 3, 200, 300]
-
   """
 
   def sort([]), do: []
-  def sort([current|[]]), do: [current]
-
-  def sort([previous|[current|[]]]) do
+  def sort([current | []]), do: [current]
+  def sort([previous |[current | tail]]) do
     cond do
-      current < previous -> [current] ++ [previous]
-      previous < current -> [previous] ++ [current]
+      current < previous -> do_sort(tail, [current, previous])
+      previous < current -> do_sort(tail, [previous, current])
     end
   end
 
-  def sort([previous|[current|tail]]) do
-    cond do
-      current < previous -> sort(tail, [current] ++ [previous])
-      previous < current -> sort(tail, [previous] ++ [current])
-    end
-  end
-
-  def sort([], right), do: right
-
-  def sort([head|[]], right) do
-    insert(head, right)
-  end
-
-  def sort([head|tail], right) do
-    sort(tail, insert(head, right))
-  end
-
-  defp insert(previous, [current|tail]) do
-    cond do
-      previous < current -> [previous] ++ [current] ++ tail
-      current < previous -> [current] ++ insert(previous, tail)
-    end
+  defp do_sort([], right), do: right
+  defp do_sort([head], right), do: insert(head, right)
+  defp do_sort([head | tail], right) do
+    do_sort(tail, insert(head, right))
   end
 
   defp insert(previous, []), do: [previous]
+  defp insert(previous, [current | tail]) do
+    cond do
+      previous < current -> [previous, current | tail]
+      current < previous -> [current | insert(previous, tail)]
+    end
+  end
 
 end

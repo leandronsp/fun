@@ -1,18 +1,9 @@
 defmodule MergeSort do
   @moduledoc """
-  Documentation for MergeSort.
-  """
-
-  @doc """
-  Algorithm:
-  SPLIT INTO SMALLER LISTS UNTIL SMALLEST
-    MERGE HEADERS
-
   Complexity:
   O(nlongn)
 
   ## Examples
-
       iex> MergeSort.sort([])
       []
 
@@ -52,34 +43,24 @@ defmodule MergeSort do
   """
 
   def sort([]), do: []
-
-  def sort([head|[]]), do: [head]
-
+  def sort([head]), do: [head]
   def sort(list) do
     {left, right} = partition(list)
     merge(sort(left), sort(right))
   end
 
-  def partition(list), do: partition(list, {[], []})
-
-  def partition([], {left, right}), do: {left, right}
-
-  def partition([head|tail], {left, right}) do
-    partition(tail, {right, [head] ++ left})
+  defp partition(list), do: partition(list, {[], []})
+  defp partition([], {left, right}), do: {left, right}
+  defp partition([head | tail], {left, right}) do
+    partition(tail, {right, [head | left]})
   end
 
-  def merge(left, right), do: merge(left, right, [])
-
-  def merge([], [], l3), do: l3
-
-  def merge([], l2, l3), do: l3 ++ l2
-  def merge(l1, [], l3), do: l3 ++ l1
-
-  def merge([h1|t1], [h2|t2], l3) when h1 >= h2 do
-    merge([h1|t1], t2, l3 ++ [h2])
-  end
-
-  def merge([h1|t1], [h2|t2], l3) do
-    merge(t1, [h2|t2], l3 ++ [h1])
+  defp merge(left, right), do: merge(left, right, [])
+  defp merge([], [], l3), do: l3
+  defp merge([], l2, l3), do: l3 ++ l2
+  defp merge(l1, [], l3), do: l3 ++ l1
+  defp merge([h1 | t1], [h2 | t2], l3) when h1 >= h2, do: merge([h1 | t1], t2, l3 ++ [h2])
+  defp merge([h1 | t1], [h2 | t2], l3) do
+    merge(t1, [h2 | t2], l3 ++ [h1])
   end
 end

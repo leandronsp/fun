@@ -1,19 +1,9 @@
 defmodule LcQuickSort do
   @moduledoc """
-  Documentation for LcQuickSort.
-  """
-
-  @doc """
-  Algorithm:
-  GIVEN A PIVOT
-    SPLIT REMAINING INTO SMALLER AND LARGER ONES (USING LIST COMPREHENSION)
-    SORT SMALLER ++ PIVOT ++ SORT LARGER
-
   Complexity:
   O(nlongn)
 
   ## Examples
-
       iex> LcQuickSort.sort([])
       []
 
@@ -49,13 +39,11 @@ defmodule LcQuickSort do
 
       iex> LcQuickSort.sort([300, 200, 1, 2, 3])
       [1, 2, 3, 200, 300]
-
   """
 
   def sort([]), do: []
   def sort([head]), do: [head]
-
-  def sort([pivot|tail]) do
+  def sort([pivot | tail]) do
     sort(for smaller <- tail, smaller <= pivot, do: smaller)
     ++ [pivot] ++
     sort(for larger <- tail, larger > pivot, do: larger)

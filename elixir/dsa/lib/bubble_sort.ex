@@ -1,9 +1,5 @@
 defmodule BubbleSort do
   @moduledoc """
-  Documentation for BubbleSort.
-  """
-
-  @doc """
   Complexity:
   O(n^2)
 
@@ -41,42 +37,37 @@ defmodule BubbleSort do
 
       iex> BubbleSort.sort([300, 200, 1, 2, 3])
       [1, 2, 3, 200, 300]
-
   """
 
   def sort([]), do: []
-
   def sort([current]), do: [current]
-
-  def sort([current|tail]) do
+  def sort([current | tail]) do
     larger = search_larger(tail)
-
     cond do
-      current > larger -> sort(tail, [current])
-      current < larger -> sort((tail -- [larger]) ++ [current], [larger])
+      current > larger -> do_sort(tail, [current])
+      current < larger -> do_sort((tail -- [larger]) ++ [current], [larger])
     end
   end
 
-  defp sort([], sorted), do: sorted
-
-  defp sort([current], sorted), do: [current | sorted]
-
-  defp sort([current|tail], sorted) do
+  defp do_sort([], sorted), do: sorted
+  defp do_sort([current], sorted), do: [current | sorted]
+  defp do_sort([current | tail], sorted) do
     larger = search_larger(tail)
-
     cond do
-      current > larger -> sort(tail, [current | sorted])
-      current < larger -> sort((tail -- [larger]) ++ [current], [larger | sorted])
+      current > larger -> do_sort(tail, [current | sorted])
+      current < larger -> do_sort((tail -- [larger]) ++ [current], [larger | sorted])
     end
   end
 
-  defp search_larger([current]), do: current
+  defp search_larger([current]) do
+    current
+  end
 
   defp search_larger([current, next]) do
     if current < next, do: next, else: current
   end
 
-  defp search_larger([current|[next|tail]]) do
+  defp search_larger([current | [next | tail]]) do
     cond do
       current < next -> search_larger([next | tail])
       current > next -> search_larger([current | tail])

@@ -1,19 +1,9 @@
 defmodule SelectionSort do
   @moduledoc """
-  Documentation for SelectionSort.
-  """
-
-  @doc """
-  Algorithm:
-  FIND:EACH
-    FIND:SMALLER FROM CURRENT UNTIL END
-    REPLACE WITH SMALLER
-
   Complexity:
   O(n^2)
 
   ## Examples
-
       iex> SelectionSort.sort([])
       []
 
@@ -50,38 +40,36 @@ defmodule SelectionSort do
   """
 
   def sort([]), do: []
-
   def sort([current]), do: [current]
-
-  def sort([current|tail]) do
+  def sort([current | tail]) do
     smaller = search_smaller(tail)
 
     cond do
-      current > smaller -> sort([smaller], [current | tail] -- [smaller])
-      current < smaller -> sort([current, smaller], tail -- [smaller])
+      current > smaller -> do_sort([smaller], [current | tail] -- [smaller])
+      current < smaller -> do_sort([current, smaller], tail -- [smaller])
     end
   end
 
-  defp sort(left, []), do: left
-
-  defp sort(left, [current]), do: left ++ [current]
-
-  defp sort(left, [current|tail]) do
+  defp do_sort(left, []), do: left
+  defp do_sort(left, [current]), do: left ++ [current]
+  defp do_sort(left, [current | tail]) do
     smaller = search_smaller(tail)
 
     cond do
-      current > smaller -> sort(left ++ [smaller], [current | tail] -- [smaller])
-      current < smaller -> sort(left ++ [current, smaller], tail -- [smaller])
+      current > smaller -> do_sort(left ++ [smaller], [current | tail] -- [smaller])
+      current < smaller -> do_sort(left ++ [current, smaller], tail -- [smaller])
     end
   end
 
-  defp search_smaller([current]), do: current
+  defp search_smaller([current]) do
+    current
+  end
 
   defp search_smaller([current, next]) do
     if current < next, do: current, else: next
   end
 
-  defp search_smaller([current|[next|tail]]) do
+  defp search_smaller([current | [next | tail]]) do
     cond do
       current < next -> search_smaller([current | tail])
       current > next -> search_smaller([next | tail])
