@@ -1,19 +1,22 @@
 class EvenFiboNumbers
 
   def self.sum_under(ceil)
-    raise ArgumentError if ceil > 4_000_000
-    sum_fibo(1, 0, ceil, 0)
-  end
+    return 0  if ceil < 2
+    return 2  if ceil < 10
 
-  def self.sum_fibo(current, previous, ceil, acc)
-    return acc if ceil <= 0
-    number = current + previous
+    acc      = 0
+    previous = 2
+    current  = 8
+    sum      = previous + current
 
-    if number % 2 == 0
-      sum_fibo(number, current, ceil - current, acc + number)
-    else
-      sum_fibo(number, current, ceil - current, acc)
+    while current < ceil
+      sum += acc
+      acc = (4 * current) + previous
+      previous = current
+      current = acc
     end
+
+    sum
   end
 
 end
