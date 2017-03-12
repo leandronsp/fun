@@ -1,24 +1,15 @@
 class Multiples3And5
 
   def self.sum_under(ceil)
-    sum((1..ceil - 1).to_a, 0)
+    number = ceil - 1
+    sum_multiples_of(3, number) + sum_multiples_of(5, number) - sum_multiples_of(15, number)
   end
 
   private
 
-  def self.sum(array, acc)
-    return acc if array == []
-    number = array.at(-1)
-
-    if number % 3 == 0 || number % 5 == 0
-      return sum(tail(array), number + acc)
-    end
-
-    sum(tail(array), acc)
-  end
-
-  def self.tail(array)
-    array.slice(0, array.length - 1)
+  def self.sum_multiples_of(multiple, number)
+    count = number / multiple
+    ((multiple + (count * multiple)) / 2.0) * count
   end
 
 end
