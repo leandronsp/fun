@@ -7,31 +7,28 @@ defmodule PrimeFactors do
 
   def largest(number) when number < 1, do: 0
   def largest(number) do
-    {number, largest} = div_by(number, 2, 0)
+    div_by(number, 2)
+    |> factor_prime(3)
+  end
 
-    cond do
-      number == 1 -> 2
-      true ->
-        {number, largest} = div_by_prime(number, 3, largest)
-        if number > 2, do: number, else: largest
+  defp factor_prime(1, _), do: 2
+  defp factor_prime(number, prime) do
+    {number, largest} = factor_prime(number, prime, 0)
+    if number > 2, do: number, else: largest
+  end
+
+  defp factor_prime(number, prime, largest) do
+    if prime > :math.sqrt(number) do
+      {number, largest}
+    else
+      number = div_by(number, prime)
+      factor_prime(number, prime + 2, prime)
     end
   end
 
-  defp div_by_prime(number, prime, largest) do
-    case prime <= :math.sqrt(number) do
-      true ->
-        {number, _} = div_by(number, prime, largest)
-        div_by_prime(number, prime + 2, prime)
-      false ->
-        {number, largest}
-    end
-  end
-
-  defp div_by(number, multiple, largest) do
-    case rem(number, multiple) == 0 do
-      true  -> (number / multiple) |> round |> div_by(multiple, multiple)
-      false -> {number, largest}
-    end
+  defp div_by(number, multiple) when rem(number, multiple) != 0, do: number
+  defp div_by(number, multiple) do
+    (number / multiple) |> round |> div_by(multiple)
   end
 
 end
