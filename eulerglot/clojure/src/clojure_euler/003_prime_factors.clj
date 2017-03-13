@@ -1,11 +1,23 @@
 (ns clojure-euler.003_prime_factors)
 
-(defn prime_factors
-  [start number acc]
-    (if (= number start)
-      (concat acc [start])
-      (if (zero? (rem number start))
-        (recur start (/ number start) (concat acc [start]))
-        (recur (+ start 1) number acc))))
+(comment "The prime factors of 13195 are 5, 7, 13 and 29.
+  What is the largest prime factor of the number 600851475143 ?")
 
-(defn largest [ceil] (apply max (prime_factors 2 ceil [])))
+(defn factor-by
+  [number multiple]
+  (if (not= 0 (rem number multiple))
+    number
+    (recur (/ number multiple) multiple)))
+
+(defn factor-by-prime
+  [number prime largest]
+  (if (> prime (Math/sqrt number))
+    [number largest]
+    (recur (factor-by number prime) (+ prime 2) prime)))
+
+(defn largest
+  [ceil]
+  (let [number (factor-by ceil 2)]
+  (let [result (factor-by-prime number 3 0)]
+  (let [number (nth result 0) largest (nth result 1)]
+  (if (> number 2) number largest)))))
