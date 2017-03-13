@@ -6,24 +6,22 @@ class LargestPrimeFactor
   #############################################
 
   def self.largest_prime_factor(number)
-    prime_factorization(number).max
-  end
+    number = number / 2 while number % 2 == 0
+    return 2 if number == 1
 
-  def self.prime_factorization(number)
-    prime_factors(2, number, [])
-  end
+    prime = 3
+    largest = 0
 
-  def self.prime_factors(start, number, arr)
-    if number == start
-      arr << start
-      return arr
+    while prime < Math.sqrt(number)
+      while number % prime == 0
+        number = number / prime
+        largest = prime
+      end
+
+      prime += 2
     end
 
-    if number % start == 0
-      prime_factors(start, number / start, (arr << start))
-    else
-      prime_factors(start + 1, number, arr)
-    end
+    number > 2 ? number : largest
   end
 
 end

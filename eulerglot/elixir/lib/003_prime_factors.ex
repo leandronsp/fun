@@ -5,21 +5,33 @@ defmodule PrimeFactors do
   What is the largest prime factor of the number 600851475143 ?
   """
 
-  def largest(ceil) do
-    prime_factors(2, ceil, [])
-    |> Enum.max
+  def largest(number) when number < 1, do: 0
+  def largest(number) do
+    {number, largest} = div_by(number, 2, 0)
+
+    cond do
+      number == 1 -> 2
+      true ->
+        {number, largest} = div_by_prime(number, 3, largest)
+        if number > 2, do: number, else: largest
+    end
   end
 
-  defp prime_factors(start, start, acc) do
-    acc ++ [start]
+  defp div_by_prime(number, prime, largest) do
+    case prime <= :math.sqrt(number) do
+      true ->
+        {number, _} = div_by(number, prime, largest)
+        div_by_prime(number, prime + 2, prime)
+      false ->
+        {number, largest}
+    end
   end
 
-  defp prime_factors(start, number, acc) when rem(number, start) == 0 do
-    prime_factors(start, (number / start) |> round, acc ++ [start])
-  end
-
-  defp prime_factors(start, number, acc) do
-    prime_factors(start + 1, number, acc)
+  defp div_by(number, multiple, largest) do
+    case rem(number, multiple) == 0 do
+      true  -> (number / multiple) |> round |> div_by(multiple, multiple)
+      false -> {number, largest}
+    end
   end
 
 end
