@@ -32,4 +32,3 @@ defmodule RotationalCipher do
     code
   end
 end
-
