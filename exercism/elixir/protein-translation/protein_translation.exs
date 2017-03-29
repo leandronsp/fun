@@ -4,31 +4,8 @@ defmodule ProteinTranslation do
   """
   @spec of_rna(String.t()) :: { atom,  list(String.t()) }
   def of_rna(rna) do
-    rna |> to_charlist |> translation([], '')
-  end
-
-  defp translation([char | tail], acc, buffer) when length(buffer) == 3 do
-    codon = buffer |> to_string
-
-    case of_codon(codon) do
-      {:error, "invalid codon"} -> {:error, "invalid RNA"}
-      {:ok, "STOP"} -> {:ok, acc}
-      {:ok, protein} -> translation(tail, acc ++ [protein], [char])
-    end
-  end
-
-  defp translation([], acc, buffer) do
-    codon = buffer |> to_string
-
-    case of_codon(codon) do
-      {:error, "invalid codon"} -> {:error, "invalid RNA"}
-      {:ok, "STOP"} -> {:ok, acc}
-      {:ok, protein} -> {:ok, acc ++ [protein]}
-    end
-  end
-
-  defp translation([char | tail], acc, buffer) do
-    translation(tail, acc, buffer ++ [char])
+    rna
+    |> translation([])
   end
 
   @proteins %{
@@ -44,31 +21,29 @@ defmodule ProteinTranslation do
 
   @doc """
   Given a codon, return the corresponding protein
-
-  UGU -> Cysteine
-  UGC -> Cysteine
-  UUA -> Leucine
-  UUG -> Leucine
-  AUG -> Methionine
-  UUU -> Phenylalanine
-  UUC -> Phenylalanine
-  UCU -> Serine
-  UCC -> Serine
-  UCA -> Serine
-  UCG -> Serine
-  UGG -> Tryptophan
-  UAU -> Tyrosine
-  UAC -> Tyrosine
-  UAA -> STOP
-  UAG -> STOP
-  UGA -> STOP
   """
   @spec of_codon(String.t()) :: { atom, String.t() }
   def of_codon(codon) do
-    case Map.get(@proteins, codon) do
-      nil     -> {:error, "invalid codon"}
-      protein -> {:ok, protein}
-    end
+    @proteins
+    |> Map.get(codon)
+    |> protein_please
   end
+
+  # OMG, really loved Kernel.SpecialForms <3
+  defp translation(<<>>, acc), do: {:ok, acc}
+  defp translation(<<char::binary-size(3), tail::binary>>, acc) do
+    char
+    |> of_codon
+    |> translate_please(tail, acc)
+  end
+
+  defp translate_please({:error, _}, _tail, _acc), do: {:error, "invalid RNA"}
+  defp translate_please({:ok, "STOP"}, _tail, acc), do: {:ok, acc}
+  defp translate_please({:ok, protein}, tail, acc) do
+    translation(tail, acc ++ [protein])
+  end
+
+  defp protein_please(nil), do: {:error, "invalid codon"}
+  defp protein_please(yay), do: {:ok, yay}
 end
 
