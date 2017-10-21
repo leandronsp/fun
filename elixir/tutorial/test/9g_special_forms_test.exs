@@ -16,7 +16,7 @@ defmodule SpecialFormsTest do
   end
 
   test "split word in chunks of 3" do
-    assert split_string_in_chunks("abcdefghi", []) == ~w(abc def ghi)
+    assert split_string_in_chunks("abcdefghijkl", []) == ~w(abc def ghi jkl)
   end
 
 end
