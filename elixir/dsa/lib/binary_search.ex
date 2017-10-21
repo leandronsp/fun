@@ -42,16 +42,16 @@ defmodule BinarySearch do
       33
   """
 
-  def search([], _), do: nil
-  def search([head], term) when head != term, do: nil
-  def search([head | tail], term) do
-    cond do
-      head == term -> head
-      term < head  -> nil
-      head != term -> [head | tail]
-        |> List.to_tuple
-        |> TupleBinarySearch.search(term)
-    end
-  end
+  def search([], _),          do: nil
+  def search([term], term),   do: term
+  def search([_head], _term), do: nil
+  def search([term|_], term), do: term
 
+  def search([head|_], term) when term < head, do: nil
+
+  def search(list, term) do
+    list
+    |> List.to_tuple
+    |> TupleBinarySearch.search(term)
+  end
 end
