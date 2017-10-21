@@ -1,20 +1,21 @@
 class Complement
+  DNA_TO_RNA = {
+    'G' => 'C',
+    'C' => 'G',
+    'T' => 'A',
+    'A' => 'U'
+  }
+
   def self.of_dna(strand)
     strand.chars.reduce("") do |acc, char|
-      converted = convert(char)
+      converted = fetch(char)
       return '' if converted == ''
 
       acc << converted
     end
   end
 
-  def self.convert(char)
-    case char
-      when 'G' then 'C'
-      when 'C' then 'G'
-      when 'T' then 'A'
-      when 'A' then 'U'
-      else ''
-    end
+  def self.fetch(char)
+    DNA_TO_RNA.fetch(char, '')
   end
 end
