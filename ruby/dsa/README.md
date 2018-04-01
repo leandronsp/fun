@@ -2,6 +2,7 @@
 
 **Data structures**
 * Vector
+* Hash Table
 * Stack
 * Simple Set
 * Queue
