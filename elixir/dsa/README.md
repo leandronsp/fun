@@ -18,6 +18,7 @@
 **Other algorithms**
 * Binary Tree inversion
 * Balance Binary Tree
+* Fibo of nth
 
 ### Setup and Run tests
 	mix deps.get
