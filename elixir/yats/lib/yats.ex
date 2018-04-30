@@ -24,7 +24,7 @@ defmodule Yats do
     |> read_line()
     |> write_line(socket)
 
-    serve(socket)
+    :gen_tcp.close(socket)
   end
 
   defp read_line(socket) do
