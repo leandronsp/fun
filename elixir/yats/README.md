@@ -1,21 +1,15 @@
 # Yats
 
-**TODO: Add description**
+Yet another TCP server. Written in Elixir.
 
-## Installation
+## Server
 
-If [available in Hex](https://hex.pm/docs/publish), the package can be installed
-by adding `yats` to your list of dependencies in `mix.exs`:
+	iex -S mix
+	iex> Yats.accept(2000)
 
-```elixir
-def deps do
-  [
-    {:yats, "~> 0.1.0"}
-  ]
-end
-```
+## Connecting
 
-Documentation can be generated with [ExDoc](https://github.com/elixir-lang/ex_doc)
-and published on [HexDocs](https://hexdocs.pm). Once published, the docs can
-be found at [https://hexdocs.pm/yats](https://hexdocs.pm/yats).
+	telnet localhost 2000
 
+## Author
+@leandronsp
