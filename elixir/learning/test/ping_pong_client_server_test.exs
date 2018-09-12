@@ -8,7 +8,9 @@ defmodule PingPongClientServerTest do
     PingPong.Client.ping(pid)
     PingPong.Client.ping(pid)
     PingPong.Client.ping(pid)
-
     assert PingPong.Client.fetch_stats(pid) == 4
+
+    PingPong.Client.ping(pid)
+    assert PingPong.Client.fetch_stats(pid) == 5
   end
 end
