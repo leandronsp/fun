@@ -1,0 +1,12 @@
+version: '3.9'
+
+services:
+  app:
+    image: haskell
+    volumes:
+      - ./:/app
+      - cabalCache:/root/.cabal/
+    working_dir: /app
+
+volumes:
+  cabalCache:

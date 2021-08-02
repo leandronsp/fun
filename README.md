@@ -8,3 +8,4 @@ fun with programming languages
 - Python
 - Javascript
 - Clojure
+- Haskell
