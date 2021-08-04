@@ -1,8 +1,8 @@
+module Tutorial.Tests.Functions where
 import Test.HUnit
-
 import Data.Char
 
-testFunctions = TestCase $
+tests = TestCase $
   do
     let square x = x * x
     assertEqual "square of 4 is 16" (square 4) 16
@@ -11,5 +11,3 @@ testFunctions = TestCase $
     let result = let square x = x * x in square 4
     assertEqual "square result of 4 is 16" result 16
     assertEqual "toUpper in a word" (map toUpper "leandro") "LEANDRO"
-
-tests = TestList [TestLabel "testFunctions" testFunctions]

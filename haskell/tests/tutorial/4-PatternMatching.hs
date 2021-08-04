@@ -1,6 +1,7 @@
+module Tutorial.Tests.PatternMatching where
 import Test.HUnit
 
-testPatternMatching = TestCase $
+tests = TestCase $
   do
     let result = let (a, b) = (5, 10) in a * 10
     assertEqual "with tuple resulting in 50" result 50
@@ -12,5 +13,3 @@ testPatternMatching = TestCase $
     assertEqual "result is 'a'" result 'a'
     let result = let abc@(a,b,c) = (1, 2, 3) in (abc,a,b,c)
     assertEqual "pattern matching using the whole value" result ((1, 2, 3), 1, 2, 3)
-
-tests = TestList [TestLabel "testPatternMatching" testPatternMatching]

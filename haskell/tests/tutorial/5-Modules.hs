@@ -1,5 +1,4 @@
-module ModulesTest where
-
+module Tutorial.Tests.Modules where
 import Test.HUnit
 
 increment :: Num a => a -> a
@@ -23,20 +22,18 @@ fib 1 = 1
 fib 2 = 1
 fib x = fib (x-1) + fib (x-2)
 
-testModules = TestCase $
+tests = TestCase $
   do
-    assertEqual "increment" (ModulesTest.increment 42) 43
-    assertEqual "maximum" (ModulesTest.maximum 42 44) 44
-    assertEqual "signum of > 1" (ModulesTest.signum 12) 1
-    assertEqual "signum of 0" (ModulesTest.signum 0) 0
-    assertEqual "circle area" (ModulesTest.circleArea 6.0) 28.274333882308138
-    assertEqual "fib(1) = 1" (ModulesTest.fib 1) 1
-    assertEqual "fib(2) = 1" (ModulesTest.fib 2) 1
-    assertEqual "fib(3) = 2" (ModulesTest.fib 3) 2
-    assertEqual "fib(4) = 3" (ModulesTest.fib 4) 3
-    assertEqual "fib(5) = 5" (ModulesTest.fib 5) 5
-    assertEqual "fib(6) = 8" (ModulesTest.fib 6) 8
-    assertEqual "fib(7) = 13" (ModulesTest.fib 7) 13
-    assertEqual "fib(8) = 21" (ModulesTest.fib 8) 21
-
-tests = TestList [TestLabel "testModules" testModules]
+    assertEqual "increment" (Tutorial.Tests.Modules.increment 42) 43
+    assertEqual "maximum" (Tutorial.Tests.Modules.maximum 42 44) 44
+    assertEqual "signum of > 1" (Tutorial.Tests.Modules.signum 12) 1
+    assertEqual "signum of 0" (Tutorial.Tests.Modules.signum 0) 0
+    assertEqual "circle area" (Tutorial.Tests.Modules.circleArea 6.0) 28.274333882308138
+    assertEqual "fib(1) = 1" (Tutorial.Tests.Modules.fib 1) 1
+    assertEqual "fib(2) = 1" (Tutorial.Tests.Modules.fib 2) 1
+    assertEqual "fib(3) = 2" (Tutorial.Tests.Modules.fib 3) 2
+    assertEqual "fib(4) = 3" (Tutorial.Tests.Modules.fib 4) 3
+    assertEqual "fib(5) = 5" (Tutorial.Tests.Modules.fib 5) 5
+    assertEqual "fib(6) = 8" (Tutorial.Tests.Modules.fib 6) 8
+    assertEqual "fib(7) = 13" (Tutorial.Tests.Modules.fib 7) 13
+    assertEqual "fib(8) = 21" (Tutorial.Tests.Modules.fib 8) 21

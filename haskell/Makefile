@@ -1,21 +1,32 @@
-hello:
-	@docker-compose run app ghc -e 'putStrLn "hello world"'
+args = $(filter-out $@, $(MAKECMDGOALS))
+
+hello.inline:
+	@docker-compose run app stack ghc -- -e 'putStrLn "hello world inline"'
+
+hello.fromhs:
+	@docker-compose run app stack ghc -- app/Hello.hs -e 'main'
 
 bash:
 	@docker-compose run app bash
 
 repl:
-	@docker-compose run app ghci
+	@docker-compose run app stack repl
+
+setup:
+	@docker-compose run app bash -c 'stack setup'
 
 setup.tests:
-	@docker-compose run app bash -c "cabal update && cabal install --lib HUnit"
+	@docker-compose run app bash -c 'stack setup && stack install HUnit'
 
 run.tests:
-	@docker-compose run app bash -c 'cabal install --lib HUnit && \
-		echo "----Basic----" && ghci tests/tutorial/0-Basic.hs -e "runTestTT tests" && \
-		echo "----Lists----" && ghci tests/tutorial/1-Lists.hs -e "runTestTT tests" && \
-		echo "----Variables----" && ghci tests/tutorial/2-Variables.hs -e "runTestTT tests" && \
-		echo "----Functions----" && ghci tests/tutorial/3-Functions.hs -e "runTestTT tests" && \
-		echo "----PatternMatching----" && ghci tests/tutorial/4-PatternMatching.hs -e "runTestTT tests" && \
-		echo "----Modules----" && ghci tests/tutorial/5-Modules.hs -e "runTestTT tests" && \
-		echo "----Types----" && ghci tests/tutorial/6-Types.hs -e "runTestTT tests"'
+	@docker-compose run app bash -c 'stack ghc --\
+		tests/**/*.hs tests/Suite.hs -e "runTestTT Tests.Suite.tests"'
+
+# Usage: make quicksort input="[2, 3, 1]"
+quicksort:
+	@[ "${input}" ] || ( echo ">> Missing input (input=\"[List]\")"; exit 1 )
+	@docker-compose run app stack ghc -- \
+		app/Quicksort.hs -e "quicksort ${input}"
+
+%:
+	@:

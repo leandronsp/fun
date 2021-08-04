@@ -1,9 +1,9 @@
+module Tutorial.Tests.Lists where
 import Test.HUnit
-
 import Data.List
 import Data.Tuple
 
-testLists = TestCase $
+tests = TestCase $
   do
     assertEqual "listSize" (length [42, 13, 22]) 3
     assertEqual "sortList" (sort [42, 13, 22]) [13, 22, 42]
@@ -14,5 +14,3 @@ testLists = TestCase $
     assertEqual "consSugarJoin" (1 : [2, 3]) [1, 2, 3]
     assertEqual "charsList" ('a' : 'b' : []) "ab"
     assertEqual "firstOfTuple" (fst (42, "leandro")) 42
-
-tests = TestList [TestLabel "testLists" testLists]
