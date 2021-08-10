@@ -6,7 +6,9 @@ services:
     volumes:
       - ./:/app
       - stackCache:/root/.stack/
+      - localCache:/app/.stack-work/
     working_dir: /app
 
 volumes:
   stackCache:
+  localCache:
