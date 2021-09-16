@@ -1,0 +1,18 @@
+version: '3.9'
+
+services:
+  db:
+    image: postgres:12
+    restart: always
+    environment:
+      POSTGRES_PASSWORD: pgdev
+      POSTGRES_USER: pgdev
+      POSTGRES_DB: pgdb
+      PGDATA: /var/lib/postgresql/data/pgdata
+    volumes:
+      - pgDatabaseData:/var/lib/postgresql/data/pgdata
+    ports:
+      - 5432:5432
+
+volumes:
+  pgDatabaseData:
