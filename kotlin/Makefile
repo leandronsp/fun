@@ -9,5 +9,3 @@ compile:
 
 hello.world.run:
 	@docker-compose run app java HelloKt
-
-
