@@ -1,0 +1,16 @@
+version: '3.9'
+
+services:
+  vnc:
+    build:
+      context: .
+      target: vnc
+    volumes:
+      - ./:/app
+      - androidSdk:/opt/android-sdk
+    working_dir: /app
+    ports:
+      - '5901:5901'
+      - '5037:5037'
+volumes:
+  androidSdk:
