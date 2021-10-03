@@ -11,7 +11,10 @@ build-type:     Simple
 library
   exposed-modules:
       ADT
+      ExpressionTrees
       Hello
+      Interactivity
+      Misc
       Quicksort
   other-modules:
       Paths_fun_haskell

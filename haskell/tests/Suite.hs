@@ -8,6 +8,7 @@ import Tutorial.Tests.Functions
 import Tutorial.Tests.PatternMatching
 import Tutorial.Tests.Modules
 import Tutorial.Tests.Types
+import Tutorial.Tests.Misc
 
 tests = TestList [
   TestLabel "basicTests" Tutorial.Tests.Basic.tests,
@@ -16,4 +17,5 @@ tests = TestList [
   TestLabel "functionsTest" Tutorial.Tests.Functions.tests,
   TestLabel "patternMatchingTest" Tutorial.Tests.PatternMatching.tests,
   TestLabel "modulesTest" Tutorial.Tests.Modules.tests,
-  TestLabel "typesTest" Tutorial.Tests.Types.tests]
+  TestLabel "typesTest" Tutorial.Tests.Types.tests,
+  TestLabel "miscTest" Tutorial.Tests.Misc.tests]
