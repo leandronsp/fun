@@ -34,3 +34,10 @@ fun with computer stuff.
 * Prometheus
 * Grafana
 * EFK
+
+## Fundamentals
+
+* UNIX
+* Git
+* Networking
+* HTTP
