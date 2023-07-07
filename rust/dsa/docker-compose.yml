@@ -1,0 +1,14 @@
+version: '3.9'
+
+services:
+  rust:
+    build:
+      context: .
+    environment:
+      CARGO_NET_GIT_FETCH_WITH_CLI: true
+    volumes:
+      - ./:/app
+      - cargo:/usr/local/cargo
+    working_dir: /app
+volumes:
+  cargo:

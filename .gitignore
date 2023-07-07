@@ -3,3 +3,5 @@ __pycache__
 META-INF/
 *.class
 .byebug_history
+rust/**/target/
+rust/**/tags
