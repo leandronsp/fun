@@ -1,0 +1,21 @@
+#!/bin/bash
+
+echo 'Building image...'
+docker build -t dinoapp --platform linux/amd64 --target release .
+
+echo 'Saving image to .tar...'
+docker save -o ./tmp/dinoapp.tar dinoapp
+
+ssh $1 mkdir -p /home/ubuntu/containers
+
+echo 'Uploading the .tar image to production...'
+scp ./tmp/dinoapp.tar $1:/home/ubuntu
+scp ./iac/containers/dinoapp $1:/home/ubuntu/containers/
+
+echo 'Loading image from the uploaded .tar file...'
+ssh $1 docker load --input dinoapp.tar
+
+echo 'Image is loaded. Going to restart the container...'
+ssh $1 bash containers/dinoapp
+
+echo 'Done'

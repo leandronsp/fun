@@ -1,0 +1,8 @@
+#!/bin/bash
+
+docker restart dinoapp || docker run \
+  --name dinoapp \
+  -d \
+  --rm \
+  -p 3000:3000 \
+  dinoapp

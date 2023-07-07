@@ -1,0 +1,29 @@
+#!/usr/bin/env ruby
+
+require 'rack/handler/puma'
+require 'rack/handler/unicorn'
+require 'adelnor'
+
+require './lib/dinoapp'
+
+require './config/db/connection'
+
+Dir['./app/errors/*.rb'].each {|file| require file }
+
+require './app/repositories/base_repository'
+Dir['./app/repositories/*.rb'].each {|file| require file }
+
+Dir['./app/models/*.rb'].each {|file| require file }
+
+require './app/contexts/base_context'
+Dir['./app/contexts/*.rb'].each {|file| require file }
+
+require './app/controllers/base_controller'
+Dir['./app/controllers/*.rb'].each {|file| require file }
+
+require './config/routes'
+
+Adelnor::Server.run Dinoapp.new, 3000
+
+#Rack::Handler::Puma.run Dinoapp.new, Port: 3000
+#Rack::Handler::Unicorn.run Dinoapp.new, Port: 3000

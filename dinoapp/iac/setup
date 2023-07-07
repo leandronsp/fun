@@ -1,0 +1,7 @@
+#!/bin/bash
+
+# copy Docker configuration to the server
+scp ./iac/configure-docker $1:/home/ubuntu
+
+# install Docker
+ssh $1 ./configure-docker
