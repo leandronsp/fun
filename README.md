@@ -41,3 +41,7 @@ fun with computer stuff.
 * Git
 * Networking
 * HTTP
+
+## Misc Lab
+
+* `/dinoapp`
