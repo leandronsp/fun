@@ -1,0 +1,17 @@
+#!/bin/bash
+
+# prepare app directory
+echo "Creating directory..."
+ssh leandronsp2022 "mkdir /home/ubuntu/app"
+
+# send files to server
+echo "Sending file to the server..."
+scp server.rb leandronsp2022:/home/ubuntu/app
+
+# restart the app process
+echo "Killing current app process..."
+ssh leandronsp2022 pkill ruby
+echo "Starting a new app process..."
+ssh leandronsp2022 "cd app; ruby server.rb &" &
+
+echo "Done"
