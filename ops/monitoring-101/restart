@@ -1,0 +1,7 @@
+#!/bin/bash
+
+kubectl rollout restart deploy/prometheus-pod --namespace monitoring
+kubectl rollout restart deploy/grafana-pod --namespace monitoring
+
+kubectl rollout status deploy/prometheus-pod --namespace monitoring
+kubectl rollout status deploy/grafana-pod --namespace monitoring
