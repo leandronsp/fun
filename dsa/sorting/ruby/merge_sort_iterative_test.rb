@@ -62,47 +62,29 @@ def sort_pass(node, steps)
     merged = merge(left, right)
 
     pointer[1] = merged
-    pointer = tail(merged)
+
+    while pointer[1]
+      pointer = pointer[1]
+    end
   end
 
   acc[1]
 end
 
-# Returns the tail of a given node
-def tail(node)
-  while node && node[1]
-    node = node[1]
-  end
-
-  node
-end
-
-# Returns the length of a given node
-def length(node)
-  count = 0
-
-  until node.nil?
-    node = node[1]
-    count += 1
-  end
-
-  count
-end
-
 # Sorts a given node applying a merge sort algorithm,
 # using a bottom-up approach (iterative) on a singly linked list
 def sort(node)
-  return node if node.nil? || node[1].nil?
-
+  acc = node
   steps = 1
-  length = length(node)
 
-  while steps < length
-    node = sort_pass(node, steps)
+  while node
+    acc = sort_pass(acc, steps)
     steps *= 2
+
+    node = node[1]
   end
 
-  node
+  acc
 end
 
 class MergeSortIterativeTest < Test::Unit::TestCase
