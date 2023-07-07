@@ -1,0 +1,47 @@
+apiVersion: tekton.dev/v1beta1
+kind: TaskRun
+metadata:
+  generateName: build-image-run-
+spec:
+  taskSpec:
+    steps:
+      - name: build-image
+        image: docker
+        script: |
+          echo 'FROM nginx' > Dockerfile
+          docker build -t my-nginx .
+          docker image tag my-nginx colima:31320/nginx
+          docker push colima:31320/nginx
+        env:
+          - name: DOCKER_HOST
+            value: tcp://localhost:2376
+          - name: DOCKER_TLS_VERIFY
+            value: "1"
+          - name: DOCKER_CERT_PATH
+            value: "/certs/client"
+        volumeMounts:
+          - mountPath: /certs/client
+            name: dind-certs
+    sidecars:
+      - name: dind
+        image: docker:dind
+        securityContext:
+          privileged: true
+        args:
+          - --storage-driver=vfs
+          - --userland-proxy=false
+          - --debug
+          - --insecure-registry=colima:31320
+        env:
+          - name: DOCKER_TLS_CERTDIR
+            value: /certs
+        volumeMounts:
+          - mountPath: /certs/client
+            name: dind-certs
+        readinessProbe:
+          periodSeconds: 1
+          exec:
+            command: ['ls', '/certs/client/ca.pem']
+    volumes:
+      - name: dind-certs
+        emptyDir: {}

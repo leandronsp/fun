@@ -1,12 +1,36 @@
-fun
-===
+# fun
 
-fun with programming languages
+fun with computer stuff.
 
-- Ruby
-- Elixir/Erlang
-- Python
-- Javascript
-- Clojure
-- Haskell
-- Kotlin
+## Programming languages
+
+* Ruby
+* Elixir
+* Erlang
+* Python
+* Javascript
+* Go
+* Rust
+* Clojure
+* Haskell
+* Kotlin
+
+## Web
+
+* HTML
+* CSS
+* Javascript
+* React
+
+## Databases
+
+* PostgreSQL
+* SQL
+
+## Ops
+
+* Kubernetes
+* Tekton CI/CD
+* Prometheus
+* Grafana
+* EFK

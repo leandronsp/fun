@@ -1,0 +1,35 @@
+apiVersion: triggers.tekton.dev/v1beta1
+kind: EventListener
+metadata:
+  name: chespirito-github-el
+spec:
+  serviceAccountName: tekton-service-account
+  triggers:
+    - name: pr-trigger
+      interceptors:
+        - ref:
+            name: "cel"
+            kind: ClusterInterceptor
+            apiVersion: triggers.tekton.dev
+          params:
+            - name: "filter"
+              value: >
+                header.match('x-github-event', 'pull_request') && body.action in ['opened', 'synchronize']
+      bindings:
+        - ref: github-pr-trigger-binding
+      template:
+        ref: github-pr-trigger-template
+    - name: push-main-trigger
+      interceptors:
+        - ref:
+            name: "cel"
+            kind: ClusterInterceptor
+            apiVersion: triggers.tekton.dev
+          params:
+            - name: "filter"
+              value: >
+                header.match('x-github-event', 'pull_request') && body.action in ['closed'] && body.pull_request.merged == true
+      bindings:
+        - ref: github-main-trigger-binding
+      template:
+        ref: github-main-trigger-template

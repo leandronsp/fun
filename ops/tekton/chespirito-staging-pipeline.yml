@@ -1,0 +1,111 @@
+apiVersion: tekton.dev/v1beta1
+kind: Pipeline
+metadata:
+  name: chespirito-staging-pipeline
+spec:
+  params:
+    - name: repo-url
+      type: string
+    - name: revision
+      type: string
+  workspaces:
+    - name: shared-data
+  tasks:
+  - name: fetch-source
+    taskRef:
+      name: git-clone
+    workspaces:
+      - name: output
+        workspace: shared-data
+    params:
+      - name: url
+        value: $(params.repo-url)
+      - name: revision
+        value: $(params.revision)
+  - name: build
+    runAfter: ["fetch-source"]
+    taskRef:
+      name: build
+    workspaces:
+      - name: source
+        workspace: shared-data
+    params:
+      - name: revision
+        value: $(params.revision)
+  - name: staging
+    runAfter: ["build"]
+    taskRef:
+      name: kubernetes-actions
+    params:
+      - name: "script"
+        value: |
+          export RELEASE_REVISION=$(params.revision)
+          export RELEASE_IMAGE=colima:31320/chespirito:$RELEASE_REVISION
+
+          kubectl set image deployment/chespirito-pod app=$RELEASE_IMAGE -n staging --record
+          kubectl rollout status deployment/chespirito-pod -n staging --timeout 5m
+---
+apiVersion: tekton.dev/v1beta1
+kind: Task
+metadata:
+  name: build
+spec:
+  params:
+    - name: revision
+      type: string
+  workspaces:
+    - name: source
+  stepTemplate:
+    image: docker
+    workingDir: $(workspaces.source.path)
+    env:
+      - name: DOCKER_HOST
+        value: tcp://localhost:2376
+      - name: DOCKER_TLS_VERIFY
+        value: "1"
+      - name: DOCKER_CERT_PATH
+        value: "/certs/client"
+    volumeMounts:
+      - mountPath: /certs/client
+        name: dind-certs
+  steps:
+    - name: unit-tests
+      script: |
+        export CI_IMAGE=colima:31320/chespirito:ci
+
+        docker pull $CI_IMAGE || true
+        docker build -t $CI_IMAGE .
+        docker run --rm $CI_IMAGE bash -c "ruby -Itest test/all.rb"
+        docker push $CI_IMAGE
+    - name: release
+      script: |
+        export RELEASE_REVISION=$(params.revision)
+        export RELEASE_IMAGE=colima:31320/chespirito:$RELEASE_REVISION
+
+        docker build -t $RELEASE_IMAGE .
+        docker push $RELEASE_IMAGE
+  sidecars:
+    - name: dind
+      image: docker:dind
+      securityContext:
+        privileged: true
+      args:
+        - --storage-driver=vfs
+        - --userland-proxy=false
+        - --debug
+        - --insecure-registry=colima:31320
+      env:
+        - name: DOCKER_TLS_CERTDIR
+          value: /certs
+      volumeMounts:
+        - mountPath: /certs/client
+          name: dind-certs
+        - mountPath: $(workspaces.source.path)
+          name: $(workspaces.source.volume)
+      readinessProbe:
+        periodSeconds: 1
+        exec:
+          command: ['ls', '/certs/client/ca.pem']
+  volumes:
+    - name: dind-certs
+      emptyDir: {}

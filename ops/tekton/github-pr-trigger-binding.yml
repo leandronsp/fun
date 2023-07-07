@@ -1,0 +1,10 @@
+apiVersion: triggers.tekton.dev/v1beta1
+kind: TriggerBinding
+metadata:
+  name: github-pr-trigger-binding
+spec:
+  params:
+  - name: revision
+    value: $(body.pull_request.head.sha)
+  - name: repo-url
+    value: $(body.repository.clone_url)

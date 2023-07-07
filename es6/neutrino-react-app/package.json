@@ -1,6 +1,0 @@
-{
-  "devDependencies": {
-    "neutrino": "^4.1.0",
-    "neutrino-preset-react": "^4.1.0"
-  }
-}

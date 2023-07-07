@@ -1,0 +1,26 @@
+version: '3.9'
+
+services:
+  golang:
+    image: golang:1.19
+    working_dir: /app
+    volumes:
+      - .:/app
+
+  rust:
+    image: rust
+    working_dir: /app
+    volumes:
+      - .:/app
+
+  ruby:
+    image: ruby
+    working_dir: /app
+    volumes:
+      - .:/app
+
+  elixir:
+    image: elixir
+    working_dir: /app
+    volumes:
+      - .:/app

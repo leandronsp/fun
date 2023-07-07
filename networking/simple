@@ -1,0 +1,102 @@
+#!/bin/bash
+
+## Create the response FIFO
+rm -f response
+mkfifo response
+
+function Object() {
+  self=$1
+
+  for arg in "$@"; do
+    read ARG_KEY ARG_VALUE <<< $(echo "$arg" | sed -E "s/(.*?)=(.*?)$/\1 \2/")
+    [[ -z "$ARG_KEY" ]] && [[ -z "$ARG_VALUE" ]] && break
+
+    export ${self}_$ARG_KEY="$ARG_VALUE"
+  done
+}
+
+function handle_GET_home() {
+  Object response data="$(cat home.html | \
+    sed "s/{{$request_cookie_name}}/$request_cookie_value/")"
+}
+
+function handle_GET_login() {
+  Object response data="$(cat login.html)"
+}
+
+function handle_POST_login() {
+  Object response data="$(cat post-login.http | \
+    sed "s/{{cookie_name}}/$request_input_name/" | \
+    sed "s/{{cookie_value}}/$request_input_value/")"
+}
+
+function handle_POST_logout() {
+  Object response data="$(cat post-logout.http | \
+    sed "s/{{cookie_name}}/$request_cookie_name/" | \
+    sed "s/{{cookie_value}}/$request_cookie_value/")"
+}
+
+function handle_not_found() {
+  Object response data="$(cat 404.html)"
+}
+
+function routeResponse() {
+  case $request_headline in
+    "GET /login")   handle_GET_login ;;
+    "GET /")        handle_GET_home ;;
+    "POST /login")  handle_POST_login ;;
+    "POST /logout") handle_POST_logout ;;
+    *)              handle_not_found ;;
+  esac
+
+  echo -e "$response_data" > response
+}
+
+function handleRequest() {
+  while read line; do
+    echo $line
+    trline=$(echo $line | tr -d '[\r\n]')
+
+    [ -z "$trline" ] && break
+
+    HEADLINE_REGEX='(.*?)\s(.*?)\sHTTP.*?'
+    [[ "$trline" =~ $HEADLINE_REGEX ]] &&
+      REQUEST=$(echo $trline | sed -E "s/$HEADLINE_REGEX/\1 \2/")
+
+    CONTENT_LENGTH_REGEX='Content-Length:\s(.*?)'
+    [[ "$trline" =~ $CONTENT_LENGTH_REGEX ]] &&
+      CONTENT_LENGTH=$(echo $trline | sed -E "s/$CONTENT_LENGTH_REGEX/\1/")
+
+    COOKIE_REGEX='Cookie:\s(.*?)\=(.*?).*?'
+    [[ "$trline" =~ $COOKIE_REGEX ]] &&
+      read COOKIE_NAME COOKIE_VALUE <<< $(echo $trline | sed -E "s/$COOKIE_REGEX/\1 \2/")
+  done
+
+  if [ ! -z "$CONTENT_LENGTH" ]; then
+    BODY_REGEX='(.*?)=(.*?)'
+
+    while read -n$CONTENT_LENGTH -t1 line; do
+      echo $line
+      trline=`echo $line | tr -d '[\r\n]'`
+
+      [ -z "$trline" ] && break
+
+      read INPUT_NAME INPUT_VALUE <<< $(echo $trline | sed -E "s/$BODY_REGEX/\1 \2/")
+    done
+  fi
+
+  Object request headline="$REQUEST"
+  Object request content_length="$CONTENT_LENGTH"
+  Object request cookie_name="$COOKIE_NAME"
+  Object request cookie_value="$COOKIE_VALUE"
+  Object request input_name="$INPUT_NAME"
+  Object request input_value="$INPUT_VALUE"
+
+  routeResponse
+}
+
+echo 'Listening on 3000...'
+
+while true; do
+  cat response | nc -lN 3000 | handleRequest
+done

@@ -1,0 +1,22 @@
+apiVersion: tekton.dev/v1beta1
+kind: Pipeline
+metadata:
+  name: chespirito-production-pipeline
+spec:
+  params:
+    - name: repo-url
+      type: string
+    - name: revision
+      type: string
+  tasks:
+  - name: production
+    taskRef:
+      name: kubernetes-actions
+    params:
+      - name: "script"
+        value: |
+          export RELEASE_REVISION=$(params.revision)
+          export RELEASE_IMAGE=colima:31320/chespirito:$RELEASE_REVISION
+
+          kubectl set image deployment/chespirito-pod app=$RELEASE_IMAGE -n production --record
+          kubectl rollout status deployment/chespirito-pod -n production --timeout 5m

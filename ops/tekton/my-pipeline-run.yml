@@ -1,0 +1,21 @@
+apiVersion: tekton.dev/v1beta1
+kind: PipelineRun
+metadata:
+  generateName: my-pipeline-
+spec:
+  pipelineRef:
+    name: my-pipeline
+  params:
+  - name: repo-url
+    value: https://github.com/leandronsp/chespirito.git
+  - name: revision
+    value: main
+  workspaces:
+  - name: shared-data
+    volumeClaimTemplate:
+      spec:
+        accessModes:
+        - ReadWriteOnce
+        resources:
+          requests:
+            storage: 1Gi

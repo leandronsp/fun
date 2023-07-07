@@ -1,0 +1,23 @@
+apiVersion: triggers.tekton.dev/v1beta1
+kind: TriggerTemplate
+metadata:
+  name: github-main-trigger-template
+spec:
+  params:
+  - name: repo-url
+  - name: revision
+    default: main
+  resourcetemplates:
+  - apiVersion: tekton.dev/v1beta1
+    kind: PipelineRun
+    metadata:
+      generateName: chespirito-production-pipeline-
+    spec:
+      serviceAccountName: tekton-kubectl-service-account
+      pipelineRef:
+        name: chespirito-production-pipeline
+      params:
+      - name: repo-url
+        value: $(tt.params.repo-url)
+      - name: revision
+        value: $(tt.params.revision)

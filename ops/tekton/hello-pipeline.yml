@@ -1,0 +1,16 @@
+apiVersion: tekton.dev/v1beta1
+kind: Pipeline
+metadata:
+  name: hello-pipeline
+spec:
+  tasks:
+    - name: hello-task
+      taskRef:
+        name: hello-task
+    - name: bye-task
+      taskSpec:
+        steps:
+          - name: bye
+            image: ubuntu
+            script: >
+              echo "Bye"

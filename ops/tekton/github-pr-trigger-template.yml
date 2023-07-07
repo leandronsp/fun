@@ -1,0 +1,32 @@
+apiVersion: triggers.tekton.dev/v1beta1
+kind: TriggerTemplate
+metadata:
+  name: github-pr-trigger-template
+spec:
+  params:
+  - name: revision
+    default: main
+  - name: repo-url
+  resourcetemplates:
+  - apiVersion: tekton.dev/v1beta1
+    kind: PipelineRun
+    metadata:
+      generateName: chespirito-staging-pipeline-
+    spec:
+      serviceAccountName: tekton-kubectl-service-account
+      pipelineRef:
+        name: chespirito-staging-pipeline
+      workspaces:
+      - name: shared-data
+        volumeClaimTemplate:
+          spec:
+            accessModes:
+            - ReadWriteOnce
+            resources:
+              requests:
+                storage: 1Gi
+      params:
+      - name: repo-url
+        value: $(tt.params.repo-url)
+      - name: revision
+        value: $(tt.params.revision)

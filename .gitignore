@@ -2,3 +2,4 @@ __pycache__
 .ruby-version
 META-INF/
 *.class
+.byebug_history

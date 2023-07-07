@@ -1,0 +1,13 @@
+apiVersion: tekton.dev/v1beta1
+kind: TaskRun
+metadata:
+  generateName: deploy-image-run-
+spec:
+  serviceAccountName: tekton-kubectl-service-account
+  taskRef:
+    name: kubernetes-actions
+  params:
+    - name: script
+      value: |
+        kubectl set image deployment/nginx-pod nginx=colima:31320/nginx --record
+        kubectl rollout status deployment/nginx-pod --timeout 5m

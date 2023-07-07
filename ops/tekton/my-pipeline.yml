@@ -1,0 +1,45 @@
+apiVersion: tekton.dev/v1beta1
+kind: Pipeline
+metadata:
+  name: my-pipeline
+spec:
+  params:
+    - name: repo-url
+      type: string
+    - name: revision
+      type: string
+  workspaces:
+    - name: shared-data
+  tasks:
+  - name: fetch-source
+    taskRef:
+      name: git-clone
+    workspaces:
+      - name: output
+        workspace: shared-data
+    params:
+      - name: url
+        value: $(params.repo-url)
+      - name: revision
+        value: $(params.revision)
+  - name: list-source
+    runAfter: ["fetch-source"]
+    taskRef:
+      name: list-source
+    workspaces:
+      - name: source
+        workspace: shared-data
+---
+apiVersion: tekton.dev/v1beta1
+kind: Task
+metadata:
+  name: list-source
+spec:
+  workspaces:
+    - name: source
+  steps:
+  - name: ls
+    image: ubuntu
+    workingDir: $(workspaces.source.path)
+    script: >
+      ls
