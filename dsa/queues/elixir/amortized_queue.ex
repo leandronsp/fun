@@ -1,34 +1,43 @@
 defmodule AmortizedQueue do
-  def new, do: {[], []}
+  defstruct primary: [], amortized: []
+
+  def new, do: %AmortizedQueue{}
 
   # O(1)
-  def enqueue({primary, amortized}, element), do: {[element | primary], amortized}
+  def enqueue(queue, element) do
+    %AmortizedQueue{
+      primary: [element | queue.primary],
+      amortized: queue.amortized
+    }
+  end
 
   # O(n) -> O(1) amortized
-  def dequeue({[], []}), do: {nil, {[], []}}
-  def dequeue({primary, [head | tail]}), do: {head, {primary, tail}}
-  def dequeue({primary, []}), do: dequeue({[], reverse(primary, [])})
+  def dequeue(%AmortizedQueue{primary: [], amortized: []}) do
+    {nil, %AmortizedQueue{}}
+  end
+
+  def dequeue(%AmortizedQueue{primary: primary, amortized: [head | tail]}) do
+    {head, %AmortizedQueue{primary: primary, amortized: tail}}
+  end
+
+  def dequeue(%AmortizedQueue{primary: primary, amortized: []}) do
+    dequeue(%AmortizedQueue{primary: [], amortized: reverse(primary, [])})
+  end
 
   defp reverse([], acc), do: acc
   defp reverse([head | tail], acc), do: reverse(tail, [head | acc])
 end
 
-{primary, amortized} = AmortizedQueue.new
+queue = AmortizedQueue.new
+queue = AmortizedQueue.enqueue(queue, 1)
+queue = AmortizedQueue.enqueue(queue, 2)
+queue = AmortizedQueue.enqueue(queue, 3)
 
-{primary, amortized} = AmortizedQueue.enqueue({primary, amortized}, 1)
-{primary, amortized} = AmortizedQueue.enqueue({primary, amortized}, 2)
-{primary, amortized} = AmortizedQueue.enqueue({primary, amortized}, 3)
-
-{element, {primary, amortized}} = AmortizedQueue.dequeue({primary, amortized})
+{element, queue} = AmortizedQueue.dequeue(queue)
 IO.inspect(element)
 
-{element, {primary, amortized}} = AmortizedQueue.dequeue({primary, amortized})
+{element, queue} = AmortizedQueue.dequeue(queue)
 IO.inspect(element)
 
-{element, {primary, amortized}} = AmortizedQueue.dequeue({primary, amortized})
-IO.inspect(element)
-
-{primary, amortized} = AmortizedQueue.enqueue({primary, amortized}, 4)
-
-{element, {_, _}} = AmortizedQueue.dequeue({primary, amortized})
+{element, _} = AmortizedQueue.dequeue(queue)
 IO.inspect(element)
