@@ -1,0 +1,7 @@
+DROP TABLE IF EXISTS users;
+DROP TABLE IF EXISTS transfers;
+
+DROP INDEX asdf;
+
+CREATE TABLE users (id SERIAL, name VARCHAR(100));
+CREATE TABLE transfers (to_id INTEGER, from_id INTEGER, amount INTEGER);
