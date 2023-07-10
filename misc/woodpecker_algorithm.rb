@@ -40,6 +40,9 @@ class WoodpeckerAlgorithm < Test::Unit::TestCase
 
     assert_equal(3, distribution[:woodpecker].length)
     assert_equal(6, distribution[:fink_fox].length)
+
+    assert_equal(%w[milk butter eggs], distribution[:woodpecker])
+    assert_equal(%w[bread cheese ham bacon sausage beer], distribution[:fink_fox])
   end
 
   def test_woodpecker_distribution_complex
