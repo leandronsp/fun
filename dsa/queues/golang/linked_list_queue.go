@@ -17,11 +17,11 @@ func (queue *LinkedListQueue) Enqueue(element int) {
 
   if queue.Head == nil {
     queue.Head = node
-    queue.Tail = node
   } else {
     queue.Tail.Next = node
-    queue.Tail = node
   }
+
+  queue.Tail = node
 }
 
 func (queue *LinkedListQueue) Dequeue() *int {
@@ -31,10 +31,6 @@ func (queue *LinkedListQueue) Dequeue() *int {
 
   node := queue.Head
   queue.Head = node.Next
-
-  if queue.Head == nil {
-    queue.Tail = nil
-  }
 
   return &node.Value
 }

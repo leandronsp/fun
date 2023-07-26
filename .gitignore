@@ -5,3 +5,4 @@ META-INF/
 .byebug_history
 rust/**/target/
 rust/**/tags
+*.svg
