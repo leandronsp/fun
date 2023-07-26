@@ -1,4 +1,4 @@
-class LinkedListQueue
+class LLQ
   def initialize
     @head = nil
     @tail = nil
@@ -28,7 +28,7 @@ class LinkedListQueue
   end
 end
 
-@queue = LinkedListQueue.new
+@queue = LLQ.new
 
 @queue.enqueue(1)
 @queue.enqueue(2)
