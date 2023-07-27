@@ -93,7 +93,7 @@ class DoublyLinkedList
   end
 
   # O(n)
-  def swap_at(idx, value)
+  def replace_at(idx, value)
     found = find_at(idx)
     return unless found
 
@@ -235,7 +235,7 @@ class DoublyLinkedListTest < Test::Unit::TestCase
     assert_equal([1, 2, 4], list.to_a)
   end
 
-  def test_swap_at
+  def test_replace_at
     list = DoublyLinkedList.new
 
     list.add_right(1)
@@ -243,7 +243,7 @@ class DoublyLinkedListTest < Test::Unit::TestCase
     list.add_right(3)
     list.add_right(4)
 
-    list.swap_at(2, 42)
+    list.replace_at(2, 42)
 
     assert_equal([1, 2, 42, 4], list.to_a)
   end
