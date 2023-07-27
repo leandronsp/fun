@@ -86,10 +86,10 @@ class DoublyLinkedList
 
     node = Node.new(value)
 
-    prev.next = node
     node.prev = prev
     node.next = found
     found.prev = node
+    prev.next = node
   end
 
   # O(n)
