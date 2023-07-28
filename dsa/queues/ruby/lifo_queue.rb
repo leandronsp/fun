@@ -1,3 +1,5 @@
+require 'test/unit'
+
 class LIFOQueue
   def initialize
     @stack = []
@@ -14,28 +16,18 @@ class LIFOQueue
   end
 end
 
-@queue = LIFOQueue.new
+class LIFOQueueTest < Test::Unit::TestCase
+  def test_lifo_queue
+    queue = LIFOQueue.new
 
-@queue.enqueue(1)
-@queue.enqueue(2)
-@queue.enqueue(3)
+    queue.enqueue(1)
+    queue.enqueue(2)
+    queue.enqueue(3)
 
-puts @queue.dequeue # 1
-puts @queue.dequeue # 2
-puts @queue.dequeue # 3
-puts @queue.dequeue # nil
+    assert_equal(1, queue.dequeue)
+    assert_equal(2, queue.dequeue)
+    assert_equal(3, queue.dequeue)
 
-@queue.enqueue(4)
-
-puts @queue.dequeue # 4
-
-@queue.enqueue(5)
-@queue.enqueue(6)
-
-puts @queue.dequeue # 5
-
-@queue.enqueue(7)
-
-puts @queue.dequeue # 6
-puts @queue.dequeue # 7
-puts @queue.dequeue # nil
+    assert_nil(queue.dequeue)
+  end
+end

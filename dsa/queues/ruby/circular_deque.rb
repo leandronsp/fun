@@ -1,7 +1,7 @@
 require 'test/unit'
 require 'byebug'
 
-class CBDeque
+class CircularDeque
   def initialize(capacity = 1)
     @buffer = Array.new(capacity)
     @left = 0
@@ -68,9 +68,9 @@ class CBDeque
   def empty? = !@buffer[@left] && (@left == @right)
 end
 
-class DequeTest < Test::Unit::TestCase
+class CircularDequeTest < Test::Unit::TestCase
   def test_queue
-    queue = CBDeque.new
+    queue = CircularDeque.new
 
     queue.rpush(1)
     queue.rpush(2)
@@ -84,7 +84,7 @@ class DequeTest < Test::Unit::TestCase
   end
 
   def test_stack
-    stack = CBDeque.new
+    stack = CircularDeque.new
 
     stack.lpush(1)
     stack.lpush(2)
@@ -98,7 +98,7 @@ class DequeTest < Test::Unit::TestCase
   end
 
   def test_mixed
-    deque = CBDeque.new
+    deque = CircularDeque.new
 
     deque.rpush(1)
     deque.rpush(2)

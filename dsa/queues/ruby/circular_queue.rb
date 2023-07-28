@@ -1,6 +1,7 @@
 require 'byebug'
+require 'test/unit'
 
-class CBQueue
+class CircularQueue
   attr_reader :buffer , :start, :end
 
   def initialize(capacity = 5)
@@ -43,13 +44,28 @@ class CBQueue
   def empty? = !@buffer[@start]
 end
 
-@queue = CBQueue.new(1)
+class CircularQueueTest < Test::Unit::TestCase
+  def test_circular_queue
+    queue = CircularQueue.new(3)
 
-@queue.enqueue(1)
-@queue.enqueue(2)
-@queue.enqueue(3)
+    queue.enqueue(1)
+    queue.enqueue(2)
+    queue.enqueue(3)
 
-puts @queue.dequeue # 1
-puts @queue.dequeue # 2
-puts @queue.dequeue # 3
-puts @queue.dequeue # nil
+    assert_equal(1, queue.dequeue)
+    assert_equal(2, queue.dequeue)
+    assert_equal(3, queue.dequeue)
+
+    assert_nil(queue.dequeue)
+
+    queue.enqueue(4)
+    queue.enqueue(5)
+    queue.enqueue(6)
+
+    assert_equal(4, queue.dequeue)
+    assert_equal(5, queue.dequeue)
+    assert_equal(6, queue.dequeue)
+
+    assert_nil(queue.dequeue)
+  end
+end
