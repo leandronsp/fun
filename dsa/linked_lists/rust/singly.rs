@@ -1,64 +1,92 @@
+use std::rc::Rc;
+use std::cell::RefCell;
+
 pub struct Node<T> {
     value: T,
-    next: Option<Box<Node<T>>>,
+    next: Option<Rc<RefCell<Node<T>>>>
 }
 
-pub struct SinglyLinkedList<T: PartialEq> {
-    head: Option<Box<Node<T>>>,
+impl<T> Node<T> {
+    fn new(value: T) -> Self {
+        Self { value: value, next: None }
+    }
 }
 
-impl<T: PartialEq> SinglyLinkedList<T> {
+pub struct SinglyLinkedList<T> {
+    head: Option<Rc<RefCell<Node<T>>>>
+}
+
+impl<T> SinglyLinkedList<T> {
     pub fn new() -> Self {
         SinglyLinkedList { head: None }
     }
 
     pub fn prepend(&mut self, value: T) {
-        let new_node = Node {
-            value,
-            next: self.head.take(),
-        };
+        let node = Rc::new(RefCell::new(Node::new(value)));
 
-        self.head = Some(Box::new(new_node));
+        match &self.head {
+            Some(head_ref) => {
+                node.borrow_mut().next = Some(head_ref.clone());
+            },
+            None => self.head = Some(node.clone())
+        }
+
+        self.head = Some(node);
     }
 
     pub fn append(&mut self, value: T) {
-        let new_node = Node {
-            value,
-            next: None,
-        };
+        let node = Rc::new(RefCell::new(Node::new(value)));
 
-        let mut pointer = &mut self.head;
+        match &self.head {
+            Some(head_ref) => {
+                let mut pointer = head_ref.clone();
 
-        while let Some(node) = pointer {
-            pointer = &mut node.next;
+                while let Some(node) = &pointer.clone().borrow().next {
+                    pointer = node.clone();
+                }
+
+                pointer.borrow_mut().next = Some(node);
+            },
+            None => {
+                self.head = Some(node);
+            }
         }
-
-        *pointer = Some(Box::new(new_node));
     }
 
-    pub fn remove(&mut self, value: T) {
-        let mut pointer = &mut self.head;
+    pub fn remove(&mut self, value: T) where T: PartialEq + Clone + std::fmt::Display {
+        let mut pointer = self.head.clone();
+        let mut previous: Option<Rc<RefCell<Node<T>>>> = None;
 
-        while let Some(ref mut node) = pointer {
-            if node.value == value {
-                *pointer = node.next.take();
+        while let Some(node) = pointer {
+            if node.borrow().value == value {
+                match previous {
+                    Some(prev_node) => {
+                        prev_node.borrow_mut().next = node.borrow().next.clone();
+                    }
+                    None => {
+                        self.head = node.borrow().next.clone();
+                    }
+                }
+
                 return;
             }
 
-            pointer = &mut node.next;
+            previous = Some(node.clone());
+            pointer = node.borrow().next.clone();
         }
     }
 
-    pub fn to_vec(&self) -> Vec<&T> {
-        let mut result = Vec::new();
-        let mut current = &self.head;
+    pub fn to_vec(&self) -> Vec<T> where T: Clone {
+        let mut vec = Vec::new();
 
-        while let Some(node) = current {
-            result.push(&node.value);
-            current = &node.next;
+        let mut pointer = self.head.clone();
+
+        while let Some(node) = pointer {
+            vec.push(node.borrow().value.clone());
+            pointer = node.borrow().next.clone();
         }
 
-        result
+        vec
     }
 }
 
@@ -72,7 +100,7 @@ mod tests {
 
         list.prepend(1);
         list.prepend(2);
-        assert_eq!(list.to_vec(), vec![&2, &1]);
+        assert_eq!(list.to_vec(), vec![2, 1]);
     }
 
     #[test]
@@ -81,7 +109,7 @@ mod tests {
 
         list.append(1);
         list.append(2);
-        assert_eq!(list.to_vec(), vec![&1, &2]);
+        assert_eq!(list.to_vec(), vec![1, 2]);
     }
 
     #[test]
@@ -90,7 +118,7 @@ mod tests {
 
         list.prepend(1);
         list.append(2);
-        assert_eq!(list.to_vec(), vec![&1, &2]);
+        assert_eq!(list.to_vec(), vec![1, 2]);
     }
 
     #[test]
@@ -104,6 +132,9 @@ mod tests {
         list.append(5);
 
         list.remove(3);
-        assert_eq!(list.to_vec(), vec![&1, &2, &4, &5]);
+        assert_eq!(list.to_vec(), vec![1, 2, 4, 5]);
+
+        list.remove(1);
+        assert_eq!(list.to_vec(), vec![2, 4, 5]);
     }
 }
