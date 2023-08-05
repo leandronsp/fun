@@ -22,14 +22,21 @@ impl<T> LIFOQueue<T> {
     }
 }
 
-fn main() {
-    let mut queue:LIFOQueue<i32> = LIFOQueue::new();
+#[cfg(test)]
+mod tests {
+    use super::*;
 
-    queue.enqueue(1);
-    queue.enqueue(2);
-    queue.enqueue(3);
+    #[test]
+    fn test_lifo_queue() {
+        let mut queue = LIFOQueue::new();
 
-    while let Some(element) = queue.dequeue() {
-        println!("{}", element);
+        queue.enqueue(1);
+        queue.enqueue(2);
+        queue.enqueue(3);
+
+        assert_eq!(queue.dequeue(), Some(1));
+        assert_eq!(queue.dequeue(), Some(2));
+        assert_eq!(queue.dequeue(), Some(3));
+        assert_eq!(queue.dequeue(), None);
     }
 }

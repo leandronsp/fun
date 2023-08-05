@@ -1,27 +1,39 @@
-fn enqueue(queue: &mut Vec<i32>, element: i32) {
-    queue.push(element);
+struct Queue<T> {
+    store: Vec<T>
 }
 
-fn dequeue(queue: &mut Vec<i32>) -> Option<i32> {
-    match queue.len() {
-        0 => None,
-        _ => Some(queue.remove(0))
+impl<T> Queue<T> {
+    fn new() -> Queue<T> {
+        Queue { store: Vec::new() }
+    }
+
+    fn enqueue(&mut self, element: T) {
+        self.store.push(element);
+    }
+
+    fn dequeue(&mut self) -> Option<T> {
+        match self.store.len() {
+            0 => None,
+            _ => Some(self.store.remove(0))
+        }
     }
 }
 
-fn main() {
-    let mut queue = Vec::new();
+#[cfg(test)]
+mod tests {
+    use super::*;
 
-    enqueue(&mut queue, 1);
-    enqueue(&mut queue, 2);
-    enqueue(&mut queue, 3);
+    #[test]
+    fn test_queue() {
+        let mut queue = Queue::new();
 
-    while let Some(element) = dequeue(&mut queue) {
-        println!("{}", element);
+        queue.enqueue(1);
+        queue.enqueue(2);
+        queue.enqueue(3);
+
+        assert_eq!(queue.dequeue(), Some(1));
+        assert_eq!(queue.dequeue(), Some(2));
+        assert_eq!(queue.dequeue(), Some(3));
+        assert_eq!(queue.dequeue(), None);
     }
-
-    enqueue(&mut queue, 4);
-
-    let element = dequeue(&mut queue).unwrap();
-    println!("{}", element);
 }

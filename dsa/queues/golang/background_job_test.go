@@ -1,3 +1,8 @@
+// go mod init queues
+// go mod tidy
+// go get github.com/stretchr/testify/assert
+// go mod tidy
+
 package queues
 
 import (

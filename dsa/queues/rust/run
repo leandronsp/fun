@@ -1,0 +1,3 @@
+#!/bin/bash
+
+rustc --test --out-dir ./build $1 && ./build/$(basename $1 .rs)

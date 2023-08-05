@@ -52,14 +52,21 @@ impl<T> LinkedListQueue<T> {
     }
 }
 
-fn main() {
-    let mut queue = LinkedListQueue::new();
+#[cfg(test)]
+mod tests {
+    use super::*;
 
-    queue.enqueue(1);
-    queue.enqueue(2);
-    queue.enqueue(3);
+    #[test]
+    fn test_linked_list_queue() {
+        let mut queue = LinkedListQueue::new();
 
-    while let Some(element) = queue.dequeue() {
-        println!("{}", element);
+        queue.enqueue(1);
+        queue.enqueue(2);
+        queue.enqueue(3);
+
+        assert_eq!(queue.dequeue(), Some(1));
+        assert_eq!(queue.dequeue(), Some(2));
+        assert_eq!(queue.dequeue(), Some(3));
+        assert_eq!(queue.dequeue(), None);
     }
 }

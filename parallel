@@ -1,0 +1,11 @@
+#!/bin/bash
+
+function process() {
+  echo "[Job $1] Started"
+  sleep 0.5
+  echo "[Job $1] Finished"
+}
+
+export -f process
+
+echo {1..10} | xargs -n1 -P0 -I{} bash -c 'process {}'
