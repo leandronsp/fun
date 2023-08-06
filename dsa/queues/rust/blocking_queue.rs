@@ -14,12 +14,12 @@ impl<T> BlockingQueue<T> {
         }
     }
 
-    fn enqueue(&mut self, t: T) {
+    fn enqueue(&self, t: T) {
         self.store.lock().unwrap().push(t);
         self.emitter.notify_one();
     }
 
-    fn dequeue(&mut self) -> Option<T> {
+    fn dequeue(&self) -> Option<T> {
         let mut store = self.store.lock().unwrap();
 
         while store.is_empty() {
@@ -36,10 +36,9 @@ mod tests {
 
     #[test]
     fn test_blocking_queue() {
-        let queue_mutex = Arc::new(Mutex::new(BlockingQueue::new()));
+        let queue = Arc::new(BlockingQueue::new());
 
         {
-            let mut queue = queue_mutex.lock().unwrap();
             queue.enqueue(1);
             queue.enqueue(2);
 
@@ -47,15 +46,14 @@ mod tests {
             assert_eq!(queue.dequeue(), Some(2));
         }
 
-        let thread_queue = queue_mutex.clone();
+        let thread_queue = queue.clone();
 
         let handle = std::thread::spawn(move || {
-            let task = thread_queue.lock().unwrap().dequeue();
+            let task = thread_queue.dequeue();
             assert_eq!(task, Some(3));
         });
 
         {
-            let mut queue = queue_mutex.lock().unwrap();
             queue.enqueue(3);
         }
 
