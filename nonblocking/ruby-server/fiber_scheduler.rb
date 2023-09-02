@@ -10,10 +10,7 @@ class FiberScheduler
   end
 
   def io_wait(io, events, duration)
-    if events & IO::READABLE != 0
-      @readable[io] = Fiber.current
-    end
-
+    @readable[io] = Fiber.current
     Fiber.yield
   end
 

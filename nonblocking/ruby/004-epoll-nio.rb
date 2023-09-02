@@ -29,8 +29,9 @@ loop do
   selector.select do |monitor|
     fd = monitor.io
     client_name = monitor.value
-    line = fd.readpartial(128) rescue nil
-    puts "Message from #{client_name}: #{line.chomp}" if line
+    line = fd.readpartial(128)
+
+    puts "Message from #{client_name}: #{line.chomp}"
   rescue EOFError
     selector.deregister(fd)
   end

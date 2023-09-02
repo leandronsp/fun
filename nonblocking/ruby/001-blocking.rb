@@ -1,3 +1,11 @@
+###############################################
+# File: 001-blocking.rb
+# A blocking mkfifo server
+###############################################
+# Send messages to the server:
+# echo "Hello from client0" > client0
+# echo "Hello from client1" > client1
+###############################################
 require 'fileutils'
 
 def cleanup
