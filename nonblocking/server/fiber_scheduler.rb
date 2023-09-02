@@ -27,8 +27,8 @@ class FiberScheduler
 
   def kernel_sleep(duration = nil)
     if duration
-      wake_time = Time.now + duration
-      @sleep_queue << [Fiber.current, wake_time]
+      delay_until = Time.now + duration
+      @sleep_queue << [Fiber.current, delay_until]
       @sleep_queue.sort_by! { |_, time| time }
     end
 
@@ -39,24 +39,16 @@ class FiberScheduler
     @fibers.each(&:resume)
 
     loop do
-      now = Time.now
-      
-      # Wake up sleeping fibers
-      while @sleep_queue.any? && @sleep_queue.first[1] <= now
+      while @sleep_queue.any? && @sleep_queue.first.last <= Time.now
         fiber, _ = @sleep_queue.shift
-        fiber.resume
+        fiber.resume if fiber.alive?
       end
 
-      # IO handling
-      if @readable.any?
-        ready_to_read, = IO.select(@readable.keys, nil, nil, 0)
-        ready_to_read&.each do |io|
-          fiber = @readable.delete(io)
-          fiber.resume
-        end
-      else
-        # Sleep for a bit if there's nothing to do, to avoid busy-looping
-        sleep 0.1
+      ready_to_read, _, _ = IO.select(@readable.keys, nil, nil, 0.1)
+
+      ready_to_read&.each do |io|
+        fiber = @readable.delete(io)
+        fiber.resume
       end
     end
   end
