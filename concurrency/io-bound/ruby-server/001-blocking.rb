@@ -3,8 +3,10 @@
 # A blocking socket server
 ###############################################
 # Run Apache AB to test: 
-# ab -c 20 -t 3 -l http://localhost:3000
-# ab -c 100 -t 10 -l http://localhost:3000
+# ab -c 20 -t 3 http://localhost:3000/
+# ab -c 100 -t 10 http://localhost:3000/
+###############################################
+# fortio load -qps 100 -t 10s -a http://localhost:3000/
 ###############################################
 require 'socket'
 

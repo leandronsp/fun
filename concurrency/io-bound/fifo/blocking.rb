@@ -1,5 +1,5 @@
 ###############################################
-# File: 001-blocking.rb
+# File: blocking.rb
 # A blocking mkfifo server
 ###############################################
 # Send messages to the server:

@@ -8,23 +8,21 @@ socket.listen(Socket::SOMAXCONN)
 
 at_exit { socket.close }
 
-@queue = Queue.new
+children = []
 
-50.times.map do
-  Thread.new do
+8.times do
+  pid = fork do
     loop do
-      client = @queue.pop
+      client, _ = socket.accept
       sleep rand(0.01..1)
       client.puts "HTTP/1.1 200 OK\r\nContent-Type: text/html\r\n\r\n<h1>Hello!</h1>"
       client.close
     end
   end
+
+  children << pid
 end
 
 puts "Server started..."
 
-loop do
-  client, _ = socket.accept
-
-  @queue.push(client)
-end
+Process.waitall
