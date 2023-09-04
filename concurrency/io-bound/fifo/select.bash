@@ -24,10 +24,10 @@ function io_select() {
   local ready_fds
 
   for fd in "$@"; do
-    msg=$(dd if=$fd iflag=nonblock 2>/dev/null)
+    msg=$(dd if=$fd iflag=nonblock 2>/dev/null | \
+      tee >(dd of=$fd conv=notrunc 2>/dev/null))
 
     if [[ -n "$msg" ]]; then
-      echo $msg > $fd #sacanagem
       ready_fds+=($fd)
     fi
   done
@@ -38,17 +38,13 @@ function io_select() {
 while true; do
     ready=$(io_select fifo1 fifo2 fifo3 fifo4)
 
-    if [ -n "$ready" ]; then
-        echo "FIFOs ready: $ready"
+    for fifo in $ready; do
+        msg=$(dd if="$fifo" iflag=nonblock 2>/dev/null)
 
-        for fifo in $ready; do
-            msg=$(dd if="$fifo" iflag=nonblock 2>/dev/null)
-
-            if [[ -n "$msg" ]]; then
-              echo "Message in $fifo: $msg"
-            fi
-        done
-    fi
+        if [[ -n "$msg" ]]; then
+          echo "Message in $fifo: $msg"
+        fi
+    done
 
     sleep 0.1
 done
