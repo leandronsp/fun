@@ -17,6 +17,7 @@ end
     puts "Fiber #{idx}: #{fiber_id}"
 
     nonblocking_sleep(20)
+    #sleep 20
   end
 end.each(&:resume)
 

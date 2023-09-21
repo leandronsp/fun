@@ -10,7 +10,7 @@ def busy_wait(n)
   end
 end
 
-#busy_wait(15)
+#busy_wait(20)
 
 initial_time = Time.now
 

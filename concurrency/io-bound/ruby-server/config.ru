@@ -7,5 +7,5 @@ App = -> (env) do
   [200, {'Content-Type' => 'text/html'}, ["<h1>Hello World</h1>"]]
 end
 
-#Rack::Handler::Falcon.run(App, Port: 3000, Host: '0.0.0.0')
-Rack::Handler::Puma.run(App, Port: 3000, Threads: '0:8')
+Rack::Handler::Falcon.run(App, Port: 3000, Host: '0.0.0.0')
+#Rack::Handler::Puma.run(App, Port: 3000, Threads: '0:8')

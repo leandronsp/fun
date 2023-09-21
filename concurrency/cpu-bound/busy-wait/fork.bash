@@ -9,11 +9,9 @@ busy_wait() {
   done
 }
 
-#busy_wait 15
-
-for i in {1..5}; do
+for i in {1..15}; do
   echo "Starting process $i"
-  busy_wait 15 &
+  busy_wait 20 &
 done
 
 wait
