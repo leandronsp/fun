@@ -1,5 +1,5 @@
-use std::rc::Rc;
 use std::cell::RefCell;
+use std::rc::Rc;
 
 pub struct Node<T> {
     value: T,
@@ -9,18 +9,25 @@ pub struct Node<T> {
 
 impl<T> Node<T> {
     fn new(value: T) -> Self {
-        Self { value: value, next: None, previous: None }
+        Self {
+            value: value,
+            next: None,
+            previous: None,
+        }
     }
 }
 
 pub struct DoublyLinkedList<T> {
     head: Option<Rc<RefCell<Node<T>>>>,
-    tail: Option<Rc<RefCell<Node<T>>>>
+    tail: Option<Rc<RefCell<Node<T>>>>,
 }
 
 impl<T> DoublyLinkedList<T> {
     pub fn new() -> Self {
-        DoublyLinkedList { head: None, tail: None }
+        DoublyLinkedList {
+            head: None,
+            tail: None,
+        }
     }
 
     pub fn add_left(&mut self, value: T) {
@@ -31,7 +38,7 @@ impl<T> DoublyLinkedList<T> {
                 node.borrow_mut().next = Some(head_ref.clone());
                 head_ref.borrow_mut().previous = Some(node.clone());
                 self.head = Some(node.clone());
-            },
+            }
             None => {
                 self.head = Some(node.clone());
                 self.tail = Some(node.clone());
@@ -47,7 +54,7 @@ impl<T> DoublyLinkedList<T> {
                 node.borrow_mut().previous = Some(tail_ref.clone());
                 tail_ref.borrow_mut().next = Some(node.clone());
                 self.tail = Some(node.clone());
-            },
+            }
             None => {
                 self.head = Some(node.clone());
                 self.tail = Some(node.clone());
@@ -55,7 +62,10 @@ impl<T> DoublyLinkedList<T> {
         }
     }
 
-    pub fn remove_left(&mut self) -> Option<T> where T: Clone {
+    pub fn remove_left(&mut self) -> Option<T>
+    where
+        T: Clone,
+    {
         match &self.head {
             Some(head_ref) => {
                 let value = head_ref.borrow().value.clone();
@@ -64,7 +74,7 @@ impl<T> DoublyLinkedList<T> {
                     Some(next_ref) => {
                         next_ref.borrow_mut().previous = None;
                         self.head = Some(next_ref.clone());
-                    },
+                    }
                     None => {
                         self.head = None;
                         self.tail = None;
@@ -72,12 +82,15 @@ impl<T> DoublyLinkedList<T> {
                 }
 
                 Some(value)
-            },
-            None => None
+            }
+            None => None,
         }
     }
 
-    pub fn remove_right(&mut self) -> Option<T> where T: Clone {
+    pub fn remove_right(&mut self) -> Option<T>
+    where
+        T: Clone,
+    {
         match &self.tail {
             Some(tail_ref) => {
                 let value = tail_ref.borrow().value.clone();
@@ -86,7 +99,7 @@ impl<T> DoublyLinkedList<T> {
                     Some(previous_ref) => {
                         previous_ref.borrow_mut().next = None;
                         self.tail = Some(previous_ref.clone());
-                    },
+                    }
                     None => {
                         self.head = None;
                         self.tail = None;
@@ -94,55 +107,60 @@ impl<T> DoublyLinkedList<T> {
                 }
 
                 Some(value)
-            },
-            None => None
+            }
+            None => None,
         }
     }
 
-    pub fn peek_left(&self) -> Option<T> where T: Clone {
+    pub fn peek_left(&self) -> Option<T>
+    where
+        T: Clone,
+    {
         match &self.head {
             Some(head_ref) => Some(head_ref.borrow().value.clone()),
-            None => None
+            None => None,
         }
     }
 
-    pub fn peek_right(&self) -> Option<T> where T: Clone {
+    pub fn peek_right(&self) -> Option<T>
+    where
+        T: Clone,
+    {
         match &self.tail {
             Some(tail_ref) => Some(tail_ref.borrow().value.clone()),
-            None => None
+            None => None,
         }
     }
 
-    pub fn remove(&mut self, value: T) -> Option<T> where T: Clone + PartialEq {
+    pub fn remove(&mut self, value: T) -> Option<T>
+    where
+        T: Clone + PartialEq,
+    {
         let mut pointer = self.head.clone();
 
         while let Some(node) = pointer {
             if node.borrow().value == value {
                 match &node.borrow().previous {
-                    Some(previous_ref) => {
-                        match &node.borrow().next {
-                            Some(next_ref) => {
-                                previous_ref.borrow_mut().next = Some(next_ref.clone());
-                                next_ref.borrow_mut().previous = Some(previous_ref.clone());
-                            },
-                            None => {
-                                previous_ref.borrow_mut().next = None;
-                                self.tail = Some(previous_ref.clone());
-                            }
+                    Some(previous_ref) => match &node.borrow().next {
+                        Some(next_ref) => {
+                            previous_ref.borrow_mut().next = Some(next_ref.clone());
+                            next_ref.borrow_mut().previous = Some(previous_ref.clone());
+                        }
+                        None => {
+                            previous_ref.borrow_mut().next = None;
+                            self.tail = Some(previous_ref.clone());
                         }
                     },
-                    None => {
-                        match &node.borrow().next {
-                            Some(next_ref) => {
-                                next_ref.borrow_mut().previous = None;
-                                self.head = Some(next_ref.clone());
-                            },
-                            None => {
-                                self.head = None;
-                                self.tail = None;
-                            }
+                    None => match &node.borrow().next {
+                        Some(next_ref) => {
+                            next_ref.borrow_mut().previous = None;
+                            self.head = Some(next_ref.clone());
                         }
-                    }
+                        None => {
+                            self.head = None;
+                            self.tail = None;
+                        }
+                    },
                 }
 
                 return Some(node.borrow().value.clone());
@@ -154,7 +172,10 @@ impl<T> DoublyLinkedList<T> {
         None
     }
 
-    pub fn find(&self, value: T) -> Option<T> where T: Clone + PartialEq {
+    pub fn find(&self, value: T) -> Option<T>
+    where
+        T: Clone + PartialEq,
+    {
         let mut pointer = self.head.clone();
 
         while let Some(node) = pointer {
@@ -168,7 +189,10 @@ impl<T> DoublyLinkedList<T> {
         None
     }
 
-    pub fn to_vec(&self) -> Vec<T> where T: Clone {
+    pub fn to_vec(&self) -> Vec<T>
+    where
+        T: Clone,
+    {
         let mut vec = Vec::new();
 
         let mut pointer = self.head.clone();

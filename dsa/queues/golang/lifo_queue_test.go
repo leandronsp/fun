@@ -1,8 +1,10 @@
 package queues
 
 import (
-  "testing"
-  "github.com/stretchr/testify/assert"
+	"internal/safefilepath"
+	"testing"
+
+	"github.com/stretchr/testify/assert"
 )
 
 type LIFOQueue struct {
