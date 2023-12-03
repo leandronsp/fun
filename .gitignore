@@ -6,6 +6,7 @@ META-INF/
 rust/**/target/
 rust/**/tags
 rust/**/build/**
+**/rust/**/target/
 rust/build/**
 *.svg
 build/
