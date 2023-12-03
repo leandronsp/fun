@@ -4,6 +4,8 @@ services:
   golang:
     image: golang:1.19
     working_dir: /app
+    ports:
+      - "3000:3000"
     volumes:
       - .:/app
 
@@ -21,6 +23,12 @@ services:
 
   elixir:
     image: elixir
+    working_dir: /app
+    volumes:
+      - .:/app
+
+  nodejs:
+    image: node
     working_dir: /app
     volumes:
       - .:/app

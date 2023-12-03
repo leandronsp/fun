@@ -1,11 +1,13 @@
+require 'test/unit'
+
 class MedianQuicksort
   def self.median(list)
     sorted = sort(list)
     size = sorted.length
     middle = size / 2
 
-    return nil if size == 0
-    return sorted[middle] unless size % 2 == 0
+    return nil if size.zero?
+    return sorted[middle] unless (size % 2).zero?
 
     (sorted[middle - 1] + sorted[middle]) / 2
   end
@@ -34,8 +36,6 @@ class MedianQuicksort
     end
   end
 end
-
-require 'test/unit'
 
 class MedianQuicksortTest < Test::Unit::TestCase
   def test_median

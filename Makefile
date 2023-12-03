@@ -21,3 +21,6 @@ elixir.bash:
 
 ruby.bash:
 	@docker compose run --rm ruby bash
+
+nodejs.bash:
+	@docker compose run --rm nodejs bash

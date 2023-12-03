@@ -27,3 +27,9 @@ def send_message(object, message, *args)
 
   object[:methods][message].call(object, *args)
 end
+
+leandro = new_instance(Account, 'Leandro', 100)
+
+send_message(leandro, :print_balance)
+send_message(leandro, :deposit, 100)
+send_message(leandro, :print_balance)

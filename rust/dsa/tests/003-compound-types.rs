@@ -52,7 +52,7 @@ mod tests {
         assert_eq!(arr[2], 3);
 
         // Memory-safety in action!
-        // Raises an index out of bounds error
-        //let not_found = arr[3];
+        // Raises an index out of bounds error COMPILE-TIME
+        // let not_found = arr[3];
     }
 }
